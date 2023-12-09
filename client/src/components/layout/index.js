@@ -1,3 +1,4 @@
+import { Loading } from 'components/shared';
 import React, { memo, useMemo, lazy, Suspense } from 'react';
 
 const Layout = () => {
@@ -9,8 +10,7 @@ const Layout = () => {
     <Suspense
       fallback={
         <div className="flex flex-auto flex-col h-[100vh]">
-          {/* <Loading loading={true} /> */}
-          <span>Loading...</span>
+          <Loading loading={true} />
         </div>
       }>
       <AppLayout />
