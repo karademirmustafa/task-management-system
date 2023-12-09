@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 
 import { PasswordInput } from 'components/shared';
 import { Alert, Button, FormContainer, FormItem, Input } from 'components/ui';
+import useAuth from 'utils/hooks/useAuth';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required('Lütfen e-posta girin'),
@@ -13,20 +14,20 @@ const validationSchema = Yup.object().shape({
 const SignInForm = (props) => {
   const { disableSubmit = false, className } = props;
   const [message, setMessage] = useState('');
-  //   const { signIn } = useAuth();
+    const { signIn } = useAuth();
 
-  //   const onSignIn = async (values, setSubmitting) => {
-  //     const { email, password } = values;
-  //     setSubmitting(true);
+    const onSignIn = async (values, setSubmitting) => {
+      const { email, password } = values;
+      setSubmitting(true);
 
-  //     const result = await signIn({ email, password });
+      const result = await signIn({ email, password });
 
-  //     if (result && result.status === 'failed') {
-  //       setMessage(result.message);
-  //     }
+      if (result && result.status === 'failed') {
+        setMessage(result.message);
+      }
 
-  //     setSubmitting(false);
-  //   };
+      setSubmitting(false);
+    };
 
   return (
     <div className={className}>
@@ -39,7 +40,7 @@ const SignInForm = (props) => {
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           if (!disableSubmit) {
-            // onSignIn(values, setSubmitting);
+            onSignIn(values, setSubmitting);
           } else {
             setSubmitting(false);
           }
@@ -80,7 +81,7 @@ const SignInForm = (props) => {
                       </FormItem>
                     </FormContainer>
 
-                    <Button block loading={isSubmitting}>
+                    <Button type="submit" block loading={isSubmitting}>
                       {isSubmitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
                     </Button>
                   </Form>
