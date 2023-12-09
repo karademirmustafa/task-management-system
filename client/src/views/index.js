@@ -7,6 +7,7 @@ import appConfig from 'configs/app.config';
 import { useSelector } from 'react-redux';
 import AuthorityGuard from 'components/route/AuthorityGuard';
 import ProtectedRoute from 'components/route/ProtectedRoute';
+import { PageContainer } from 'components/shared';
 
 const { authenticatedEntryPath } = appConfig;
 
@@ -29,7 +30,9 @@ const AllRoutes = (props) => {
                 userAuthority={userAuthority}
                 access={route.access}
                 authority={route.authority}>
+                  <PageContainer header={true} sidebar={true}>
                   <AppRoute routeKey={route.key} component={route.component} {...route.meta} />
+                  </PageContainer>
               </AuthorityGuard>
             }
           />
