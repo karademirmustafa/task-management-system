@@ -30,7 +30,6 @@ function useAuth() {
 
           dispatch(setUser(profile.data.data));
           dispatch(setAuthority(profile.data.data.roles));
-          // const user = profile.data;
         }, 500);
         setTimeout(async () => {
           const redirectUrl = query.get(REDIRECT_URL_KEY);
@@ -52,8 +51,8 @@ function useAuth() {
   const signUp = async (values) => {
     try {
       const resp = await apiSignUp(values);
-      if (resp.data) {
-        const { token } = resp.data;
+      if (resp.data.data) {
+        const { token } = resp.data.data;
         dispatch(onSignInSuccess(token));
         if (resp.data.user) {
           dispatch(
