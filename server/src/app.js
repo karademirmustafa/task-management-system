@@ -20,6 +20,9 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
+// Logger
+const loggerMiddleware = require("./middlewares/logger");
+app.use(loggerMiddleware);
 
 // Global Error Handler
 const errorHandler = require("./middlewares/error");
