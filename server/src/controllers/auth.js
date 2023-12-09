@@ -43,8 +43,9 @@ const register = async (req, res, next) => {
       user: newUser,
       statusCode: 201,
     });
+    const {password:ps,...newUserWithoutPassword} = newUser._doc;
 
-    return res.status(201).json({ status: true, message, data: { token } });
+    return res.status(201).json({ status: true, message, data: { token ,user:newUserWithoutPassword} });
   } catch (err) {
     next(err);
   }
