@@ -17,7 +17,7 @@ function useAuth() {
   const query = useQuery();
 
   const { token, signedIn } = useSelector((state) => state.auth.session);
-  const { id } = useSelector((state) => state.auth.user);
+  const { _id } = useSelector((state) => state.auth.user);
 
   const signIn = async (values) => {
     try {
@@ -92,7 +92,7 @@ function useAuth() {
   };
 
   return {
-    authenticated: token && signedIn && id,
+    authenticated: token && signedIn && _id,
     signIn,
     signUp,
     signOut
