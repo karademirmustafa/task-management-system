@@ -21,8 +21,11 @@ app.use(helmet());
 app.use(express.json());
 
 
-const PORT = process.env.PORT || 6000;
+// Global Error Handler
+const errorHandler = require("./middlewares/error");
+app.use(errorHandler);
 
+const PORT = process.env.PORT || 6000;
 server.listen(PORT,() => {
     console.log("Server is running!");
 })
