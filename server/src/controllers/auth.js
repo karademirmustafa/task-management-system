@@ -33,10 +33,6 @@ const login = async (req, res, next) => {
 
 const register = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) throw BadRequest;
-
     const newUser = await AuthService.create(req.body);
 
     const { token, message } = await AuthService.sendToken({
