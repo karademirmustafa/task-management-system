@@ -17,6 +17,23 @@ const insertTask = async (req, res, next) => {
   }
 };
 
+const getTasks = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const query = req.query;
+      const where = {};
+      const roles = req.roles;
+      const params = { user, query, where,next,roles};
+  
+      const tasks = await TaskService.getTasks(params);
+  
+      return res
+        .status(200)
+        .json({ status: true, message: "Fetch tasks", data: tasks.data,meta:tasks.meta });
+    } catch (err) {
+      next(err);
+    }
+  };
 
 const getTask = async (req, res, next) => {
     try {
@@ -34,4 +51,4 @@ const getTask = async (req, res, next) => {
     }
   };
 
-module.exports = { insertTask,getTask};
+module.exports = { insertTask,getTasks,getTask};

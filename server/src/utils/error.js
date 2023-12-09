@@ -7,6 +7,7 @@ class ErrorResponse extends Error {
   
   module.exports = {
     ErrorResponse,
+    Forbidden:new ErrorResponse("Access denied",403),
     NotFound: new ErrorResponse("Not found.", 404),
     NotFoundUser: new ErrorResponse("Not found user.", 404),
     BadRequest: new ErrorResponse("Bad Request.", 400),
