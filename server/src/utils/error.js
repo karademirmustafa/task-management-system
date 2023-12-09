@@ -6,6 +6,7 @@ class ErrorResponse extends Error {
   }
   
   module.exports = {
-    ErrorResponse
+    ErrorResponse,
+    BadRequest: new ErrorResponse("Bad Request.", 400),
   };
   
