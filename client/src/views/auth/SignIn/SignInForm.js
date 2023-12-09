@@ -85,7 +85,7 @@ const SignInForm = (props) => {
                     </FormContainer>
 
                     <Button type="submit" block loading={isSubmitting}>
-                      {isSubmitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+                      {isSubmitting ? 'Loggin In...' : 'Login'}
                     </Button>
                   </Form>
                 </div>
