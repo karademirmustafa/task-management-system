@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
     // Calculate response time
     const endTime = new Date();
     const responseTime = endTime - startTime;
-    const ipAddress = req.headers['cf-connecting-ip'];
+    const ipAddress = req.ip || req.headers['cf-connecting-ip'];
     const method = req.method;
     const action = req.path;
     const body = req.body;
