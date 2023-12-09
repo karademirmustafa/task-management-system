@@ -33,6 +33,6 @@ router
 router
   .route("/:id")
   .get(idChecker(), protect, TaskController.getTask)
-  .put(idChecker(),validate(taskSchemas.updateSchema), protect, TaskController.updateTask);
-
+  .put(idChecker(),validate(taskSchemas.updateSchema), protect, TaskController.updateTask)
+  .delete(idChecker(),protect, TaskController.removeTask);
 module.exports = router;

@@ -78,4 +78,23 @@ const updateTask = async (req, res, next) => {
   }
 };
 
-module.exports = { insertTask, getTasks, getTask,updateTask };
+const removeTask = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const params = req.params;
+    const where = {
+      userId: user._id,
+      _id: params.id,
+    };
+    const task = await TaskService.findOne(where);
+    if (!task) throw NotFound;
+
+    const result = await TaskService.removeTask({task});
+  
+    return res.status(200).json({status:true,message:"Remove Task",data:result})
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { insertTask, getTasks, getTask,updateTask,removeTask };

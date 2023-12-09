@@ -98,7 +98,7 @@ class TaskService extends BaseService {
 
   async updateTask(params) {
     try {
-      const { body, task} = params;
+      const { body, task } = params;
 
       task.title = body.title;
       task.description = body.description;
@@ -111,6 +111,20 @@ class TaskService extends BaseService {
         if (body.status) task.history.push({ key: "status", updatedAt });
         if (body.dueDate) task.history.push({ key: "dueDate", updatedAt });
       }
+
+      await task.save();
+
+      return task;
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async removeTask(params) {
+    try {
+      const { task } = params;
+
+      task.isDeletedAt = new Date();
 
       await task.save();
 
