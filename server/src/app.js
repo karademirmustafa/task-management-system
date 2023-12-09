@@ -26,6 +26,7 @@ app.use(loggerMiddleware);
 
 // Routes
 app.use("/api/auth", routes.auth);
+app.use("/api/tasks", routes.tasks);
 
 // Global Error Handler
 const errorHandler = require("./middlewares/error");
