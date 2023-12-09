@@ -5,7 +5,15 @@ const insertSchema = Joi.object({
   description: Joi.string(),
   dueDate: Joi.date(),
 });
+const updateSchema = Joi.object({
+  title: Joi.string(),
+  description: Joi.string(),
+  status: Joi.string(),
+  dueDate: Joi.date()
+});
+
 
 module.exports = {
   insertSchema,
+  updateSchema
 };

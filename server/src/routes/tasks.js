@@ -30,6 +30,9 @@ router
     TaskController.getTasks
   );
 
-router.route("/:id").get(idChecker(), protect, TaskController.getTask);
+router
+  .route("/:id")
+  .get(idChecker(), protect, TaskController.getTask)
+  .put(idChecker(),validate(taskSchemas.updateSchema), protect, TaskController.updateTask);
 
 module.exports = router;

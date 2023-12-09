@@ -1,7 +1,7 @@
 const BaseService = require("./BaseService");
 const Task = require("../models/Task");
-const {Forbidden, BadRequest} = require("../utils/error");
-const {hasRole} = require("../utils/hasRole");
+const { Forbidden, BadRequest } = require("../utils/error");
+const { hasRole } = require("../utils/hasRole");
 const ROLES_LIST = require("../config/rolesList");
 
 class TaskService extends BaseService {
@@ -22,10 +22,16 @@ class TaskService extends BaseService {
   }
 
   async getTasks(params) {
-    const { next, query, where, user,roles } = params;
+    const { next, query, where, user, roles } = params;
 
-    let { sort="createdAt", orderBy=-1, page=1, size=10, filterBy="" } = query;
-    const userId=user._id;
+    let {
+      sort = "createdAt",
+      orderBy = -1,
+      page = 1,
+      size = 10,
+      filterBy = "",
+    } = query;
+    const userId = user._id;
     try {
       if (!page || parseInt(page) <= 0) page = 1; // valid page check
 
@@ -36,28 +42,35 @@ class TaskService extends BaseService {
       if (orderBy) orderBy = orderBy.toLowerCase() === "asc" ? 1 : -1;
 
       // maybe it could be constant
-      const allowedFilters = ['title', 'status', 'userId', 'description'];
-      
+      const allowedFilters = ["title", "status", "userId", "description"];
+
       if (filterBy && filterBy.includes(":")) {
         const [filterKey, filterValue] = filterBy.split(":");
-      
-        if (filterKey === 'userId' && !hasRole(roles,ROLES_LIST.admin) && filterValue !== userId.toString()) {
+
+        if (
+          filterKey === "userId" &&
+          !hasRole(roles, ROLES_LIST.admin) &&
+          filterValue !== userId.toString()
+        ) {
           throw Forbidden; // unauthorized entry
         } else if (allowedFilters.includes(filterKey)) {
-          where[filterKey] = (filterKey === 'userId' && !hasRole(roles,ROLES_LIST.admin)) ? userId.toString() : filterValue;
+          where[filterKey] =
+            filterKey === "userId" && !hasRole(roles, ROLES_LIST.admin)
+              ? userId.toString()
+              : filterValue;
         } else {
-          throw BadRequest // invalid filter key
+          throw BadRequest; // invalid filter key
         }
       }
       const skip = (parseInt(page) - 1) * parseInt(size);
 
-      if (hasRole(roles,ROLES_LIST.admin)) {
+      if (hasRole(roles, ROLES_LIST.admin)) {
         where = {};
       } else {
-        if (hasRole(roles,ROLES_LIST.manager)) {
-          where.$or = [{ assignedTo: userId }, { userId}];
+        if (hasRole(roles, ROLES_LIST.manager)) {
+          where.$or = [{ assignedTo: userId }, { userId }];
         } else {
-          where.userId = userId
+          where.userId = userId;
         }
       }
       const tasks = await Task.find({ ...where })
@@ -67,7 +80,7 @@ class TaskService extends BaseService {
         .populate("userId", "name email -_id")
         .populate("assignedTo", "name email -_id");
 
-      const total = await Task.countDocuments({...where});
+      const total = await Task.countDocuments({ ...where });
       const pageCount = Math.ceil(total / parseInt(size));
 
       const meta = {
@@ -78,6 +91,30 @@ class TaskService extends BaseService {
         sort,
       };
       return { meta, data: tasks };
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateTask(params) {
+    try {
+      const { body, task} = params;
+
+      task.title = body.title;
+      task.description = body.description;
+      task.dueDate = body.dueDate;
+      task.status = body.status;
+
+      // track task history
+      if (body.status || body.dueDate) {
+        const updatedAt = new Date();
+        if (body.status) task.history.push({ key: "status", updatedAt });
+        if (body.dueDate) task.history.push({ key: "dueDate", updatedAt });
+      }
+
+      await task.save();
+
+      return task;
     } catch (err) {
       next(err);
     }

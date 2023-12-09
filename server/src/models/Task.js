@@ -8,7 +8,7 @@ const TaskSchema = new mongoose.Schema({
     description: String,
     status: {type:String,enum: ['pending', 'completed'],default:"pending",},
     dueDate: Date,
-    history:[{newStatus:String,updatedAt:Date}],
+    history:[{key:String,updatedAt:Date}],
     assignedTo:{type:ObjectId,ref:"User"},
     isDeletedAt:Date
 

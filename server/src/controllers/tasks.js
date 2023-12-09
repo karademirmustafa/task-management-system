@@ -1,6 +1,5 @@
 const TaskService = require("../services/TaskService");
 
-
 const insertTask = async (req, res, next) => {
   try {
     const user = req.user;
@@ -18,37 +17,65 @@ const insertTask = async (req, res, next) => {
 };
 
 const getTasks = async (req, res, next) => {
-    try {
-      const user = req.user;
-      const query = req.query;
-      const where = {};
-      const roles = req.roles;
-      const params = { user, query, where,next,roles};
-  
-      const tasks = await TaskService.getTasks(params);
-  
-      return res
-        .status(200)
-        .json({ status: true, message: "Fetch tasks", data: tasks.data,meta:tasks.meta });
-    } catch (err) {
-      next(err);
-    }
-  };
+  try {
+    const user = req.user;
+    const query = req.query;
+    const where = {};
+    const roles = req.roles;
+    const params = { user, query, where, next, roles };
+
+    const tasks = await TaskService.getTasks(params);
+
+    return res
+      .status(200)
+      .json({
+        status: true,
+        message: "Fetch tasks",
+        data: tasks.data,
+        meta: tasks.meta,
+      });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const getTask = async (req, res, next) => {
-    try {
-      const params = req.params;
-  
-      const task = await TaskService.findById(params.id);
-  
-      if (!task) throw NotFound;
-  
-      return res
-        .status(200)
-        .json({ status: true, message: "Get Task", data: task });
-    } catch (err) {
-      next(err);
-    }
-  };
+  try {
+    const params = req.params;
 
-module.exports = { insertTask,getTasks,getTask};
+    const task = await TaskService.findById(params.id);
+
+    if (!task) throw NotFound;
+
+    return res
+      .status(200)
+      .json({ status: true, message: "Get Task", data: task });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateTask = async (req, res, next) => {
+  try {
+    const params = req.params;
+    const user = req.user;
+    const body = req.body;
+    const where = {
+      userId: user._id,
+      _id: params.id,
+    };
+    const task = await TaskService.findOne(where);
+
+    if (!task) throw NotFound;
+
+    const result = await TaskService.updateTask({ body, task });
+
+    return res
+      .status(200)
+      .json({ status: true, message: "Update Task", data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { insertTask, getTasks, getTask,updateTask };
