@@ -1,5 +1,5 @@
 const appConfig = {
-    apiPrefix:'http://localhost:6000', // will be taken from .env
+    apiPrefix:'https://task-management-system-api.onrender.com/api', // will be taken from .env
     authenticatedEntryPath: '/home',
     unAuthenticatedEntryPath: '/sign-in',
     tourPath: '/',
