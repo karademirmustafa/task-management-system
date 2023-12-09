@@ -9,8 +9,18 @@ const loginSchema = Joi.object({
   password: Joi.string().min(8).required(),
 });
 
+const authorizeSchema = Joi.object({
+  userId: Joi.string().alphanum().length(24).required(),
+  access: Joi.number().required(),
+});
+const revokeSchema = Joi.object({
+  userId: Joi.string().alphanum().length(24).required(),
+  access: Joi.number().required(),
+});
 
 module.exports = {
   registerSchema,
   loginSchema,
+  authorizeSchema,
+  revokeSchema,
 };

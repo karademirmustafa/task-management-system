@@ -50,6 +50,37 @@ const register = async (req, res, next) => {
   }
 };
 
+const authorize = async (req, res, next) => {
+  try {
+    const { userId, access } = req.body;
 
+    if (userId == req.user._id) throw BadRequest;
 
-module.exports = { login, register};
+    const user = await UserService.findById(userId, "roles");
+
+    if (!user) throw NotFoundUser;
+
+    const result = await AuthService.authorizeUser({ user, access });
+    return res.status(200).json({ status: true, message: "Authorize User", data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const revoke = async (req, res, next) => {
+  try {
+    const {userId,access}=req.body;
+    if(userId ==req.user._id) throw BadRequest;
+
+    const user = await UserService.findById(userId,"roles");
+
+    if(!user) throw NotFoundUser;
+
+    const result = await AuthService.revokeUser({user,access});
+    return res.status(200).json({status:true,message:"Revoke User",data:result})
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { login, register, authorize,revoke};
