@@ -10,7 +10,10 @@ export const protectedRoutes = [
     path: '/home',
     component: React.lazy(() => import('views/home')),
     authority: [USER],
-    access:[]
+    access:[],
+    title:"Home Page",
+    type:"Private",
+    description:"Home Page, info cards"
   },
 
 ];
