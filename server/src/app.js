@@ -9,7 +9,7 @@ const helmet = require("helmet");
 
 const http = require("http");
 const server = http.createServer(app);
-
+const routes = require("./routes");
 // Load config
 config();
 
@@ -23,6 +23,9 @@ app.use(express.json());
 // Logger
 const loggerMiddleware = require("./middlewares/logger");
 app.use(loggerMiddleware);
+
+// Routes
+app.use("/api/auth", routes.auth);
 
 // Global Error Handler
 const errorHandler = require("./middlewares/error");
