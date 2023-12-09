@@ -1,4 +1,4 @@
-const {BadRequest} = require("../utils/errorResponse");
+const {BadRequest} = require("../utils/error");
 module.exports = {
   validate: (schema) => {
     return async (req, res, next) => {

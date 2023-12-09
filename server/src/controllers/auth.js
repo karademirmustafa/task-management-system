@@ -52,4 +52,4 @@ const register = async (req, res, next) => {
 
 
 
-module.exports = { login, register, authorize,revoke };
+module.exports = { login, register};
