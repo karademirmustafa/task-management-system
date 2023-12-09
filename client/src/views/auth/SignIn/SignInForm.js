@@ -33,7 +33,7 @@ const SignInForm = (props) => {
     <div className={className}>
       <Formik
         initialValues={{
-          userName: '',
+          email: '',
           password: '',
           rememberMe: true
         }}
@@ -60,8 +60,8 @@ const SignInForm = (props) => {
                     <FormContainer>
                       <FormItem
                         label="Email"
-                        invalid={errors.userName && touched.userName}
-                        errorMessage={errors.userName}>
+                        invalid={errors.email && touched.email}
+                        errorMessage={errors.email}>
                         <Field
                           type="text"
                           autoComplete="off"
