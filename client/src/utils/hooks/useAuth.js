@@ -22,16 +22,14 @@ function useAuth() {
   const signIn = async (values) => {
     try {
       const resp = await apiSignIn(values);
-      if (resp.data.accessToken) {
-        dispatch(onSignInSuccess(resp.data.accessToken));
+      if (resp.data.data.token) {
+        dispatch(onSignInSuccess(resp.data.data.token));
 
         setTimeout(async () => {
           const profile = await apiUserProfile();
 
-          dispatch(setUser(profile.data));
-          dispatch(setAuthority(profile.data.roles));
-
-          const user = profile.data;
+          dispatch(setUser(profile.data.data));
+          dispatch(setAuthority(profile.data.data.roles));
         }, 500);
         setTimeout(async () => {
           const redirectUrl = query.get(REDIRECT_URL_KEY);
@@ -53,8 +51,8 @@ function useAuth() {
   const signUp = async (values) => {
     try {
       const resp = await apiSignUp(values);
-      if (resp.data) {
-        const { token } = resp.data;
+      if (resp.data.data) {
+        const { token } = resp.data.data;
         dispatch(onSignInSuccess(token));
         if (resp.data.user) {
           dispatch(

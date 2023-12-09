@@ -7,20 +7,21 @@ import { Alert, Button, FormContainer, FormItem, Input } from 'components/ui';
 import useAuth from 'utils/hooks/useAuth';
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required('Please enter your e-mail'),
-  password: Yup.string().required('Please enter your password')
+  email: Yup.string().required('Lütfen e-posta girin'),
+  password: Yup.string().required('Lütfen şifrenizini girin'),
+  name: Yup.string().required('Lütfen isminizi  girin')
 });
 
-const SignInForm = (props) => {
+const SignUpForm = (props) => {
   const { disableSubmit = false, className } = props;
   const [message, setMessage] = useState('');
-  const { signIn } = useAuth();
+  const { signUp } = useAuth();
 
-  const onSignIn = async (values, setSubmitting) => {
-    const { email, password } = values;
+  const onSignUp = async (values, setSubmitting) => {
+    const { email, password, name } = values;
     setSubmitting(true);
 
-    const result = await signIn({ email, password });
+    const result = await signUp({ email, password, name });
 
     if (result && result.status === 'failed') {
       setMessage(result.message);
@@ -35,12 +36,12 @@ const SignInForm = (props) => {
         initialValues={{
           email: '',
           password: '',
-          rememberMe: true
+          name: ''
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           if (!disableSubmit) {
-            onSignIn(values, setSubmitting);
+            onSignUp(values, setSubmitting);
           } else {
             setSubmitting(false);
           }
@@ -54,10 +55,22 @@ const SignInForm = (props) => {
               <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                   <h2 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-                    Sign in to your account
+                    Sign up to your account
                   </h2>
                   <Form>
                     <FormContainer>
+                      <FormItem
+                        label="Name"
+                        invalid={errors.name && touched.name}
+                        errorMessage={errors.name}>
+                        <Field
+                          type="text"
+                          autoComplete="off"
+                          name="name"
+                          placeholder=""
+                          component={Input}
+                        />
+                      </FormItem>
                       <FormItem
                         label="Email"
                         invalid={errors.email && touched.email}
@@ -73,8 +86,8 @@ const SignInForm = (props) => {
 
                       <FormItem
                         label="Password"
-                        invalid={errors.email && touched.email}
-                        errorMessage={errors.email}>
+                        invalid={errors.password && touched.password}
+                        errorMessage={errors.password}>
                         <Field
                           autoComplete="off"
                           name="password"
@@ -85,7 +98,7 @@ const SignInForm = (props) => {
                     </FormContainer>
 
                     <Button type="submit" block loading={isSubmitting}>
-                      {isSubmitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+                      {isSubmitting ? 'Kayıt olunuyor...' : 'Kayıt Ol'}
                     </Button>
                   </Form>
                 </div>
@@ -103,4 +116,4 @@ const SignInForm = (props) => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
