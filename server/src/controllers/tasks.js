@@ -18,5 +18,20 @@ const insertTask = async (req, res, next) => {
 };
 
 
+const getTask = async (req, res, next) => {
+    try {
+      const params = req.params;
+  
+      const task = await TaskService.findById(params.id);
+  
+      if (!task) throw NotFound;
+  
+      return res
+        .status(200)
+        .json({ status: true, message: "Get Task", data: task });
+    } catch (err) {
+      next(err);
+    }
+  };
 
-module.exports = { insertTask};
+module.exports = { insertTask,getTask};
