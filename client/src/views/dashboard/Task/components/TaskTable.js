@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTasks, initialFilterData } from '../store/dataSlice';
+import { getTasks, initialFilterData, setFilterData } from '../store/dataSlice';
 import { Loading, Table } from 'components/shared';
 import { Button } from 'components/ui';
 import { useNavigate } from 'react-router-dom';
@@ -23,10 +23,11 @@ export default function TaskTable() {
   //   [pageIndex, pageSize, sort, query, total]
   // );
   const handlePageChange = (newPage) => {
-    dispatch(getTasks({ ...filterData, page: newPage,size:pageSize }));
+    dispatch(getTasks({ ...filterData, page: newPage }));
   };
   const handlePageSizeChange = (newPageSize) => {
-    dispatch(getTasks({ ...initialFilterData, page: 1, size: newPageSize })); // Fetch data with new page size, reset to first page
+    dispatch(setFilterData({size:newPageSize}));
+    dispatch(getTasks({ ...filterData, page: 1, size: newPageSize })); // Fetch data with new page size, reset to first page
   };
   const handleRemoveTask = (id) => {
     Swal.fire({

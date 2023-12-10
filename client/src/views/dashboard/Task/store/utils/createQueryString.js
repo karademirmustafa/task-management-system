@@ -1,7 +1,6 @@
 function createQueryString(params) {
   const queryString = new URLSearchParams();
 
-  queryString.append('orderBy', params.orderBy || -1);
   queryString.append('page', params.page || 1);
   queryString.append('size', params.size || 10);
 

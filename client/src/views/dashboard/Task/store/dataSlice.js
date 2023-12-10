@@ -18,7 +18,6 @@ export const initialTableData = {
 };
 
 export const initialFilterData = {
-  orderBy: -1,
   page: 1,
   size: 10,
   sort: { createdAt: 'desc' },
@@ -48,7 +47,7 @@ const dataSlice = createSlice({
       state.filterData.sort = { ...state.filterData.sort, ...action.payload };
     },
     setFilterData: (state, action) => {
-      state.filterData = action.payload;
+      state.filterData = {...state.filterData,...action.payload};
     },
     setCountFormExt1: (state, action) => {
       state.countFormExt1 = action.payload;
@@ -72,7 +71,7 @@ const dataSlice = createSlice({
 export const {
   updateTaskList,
   setTableData,
-  setFilterDatas,
+  setFilterData,
   setFilter,
   setSort,
   setCountFormExt1
