@@ -30,14 +30,15 @@ function useAuth() {
 
           dispatch(setUser(profile.data.data));
           dispatch(setAuthority(profile.data.data.roles));
-        }, 500);
+        }, 200);
         setTimeout(async () => {
-          navigate(appConfig.authenticatedEntryPath);
+          const redirectUrl = query.get(REDIRECT_URL_KEY);
+          navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath,{replace:true});
           return {
             status: 'success',
             message: ''
           };
-        }, 200);
+        }, 400);
       }
     } catch (errors) {
       return {
@@ -57,9 +58,8 @@ function useAuth() {
           dispatch(
             setUser(
               resp.data.user || {
-                avatar: '',
-                userName: 'Anonymous',
-                authority: USER,
+                name: 'Anonymous',
+                roles: [USER],
                 email: ''
               }
             )
