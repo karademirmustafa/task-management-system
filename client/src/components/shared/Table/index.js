@@ -1,3 +1,4 @@
+import { Alert } from "components/ui";
 import Loading from "../Loading";
 import Column from "./Column";
 import TableRow from "./TableRow";
@@ -22,6 +23,7 @@ const TableComponent = (props) => {
         </tbody>
       </table>
     </div>}
+    {!loading && data?.length===0 && <Alert type="info">No tasks found in table</Alert>}
     </>
   );
 };
