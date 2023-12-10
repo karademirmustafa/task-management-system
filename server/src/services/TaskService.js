@@ -23,45 +23,67 @@ class TaskService extends BaseService {
 
   async getTasks(params) {
     const { next, query, where, user, roles } = params;
+    console.log(params, "params");
+    let { page, size, sort, filter } = query;
 
-    let {
-      sort = "createdAt",
-      orderBy = -1,
-      page = 1,
-      size = 10,
-      filterBy = "",
-    } = query;
+   page = Math.max(1, parseInt(page) || 1);
+  size = parseInt(size) || 10;
+
+  // Sıralama ayarları
+  const sortOrder = {};
+  sort && Object.keys(sort).forEach(key => {
+    sortOrder[key] = sort[key] === "asc" ? 1 : -1;
+  });
+
+  const filters={}
+  if (filter) {
+    ['dueDate', 'createdAt'].forEach(dateField => {
+      if (filter[dateField] && filter[dateField].start && filter[dateField].end) {
+        const startDate = new Date(filter[dateField].start);
+        const endDate = new Date(filter[dateField].end);
+        endDate.setHours(23, 59, 59, 999);
+  
+        filters[dateField] = { $gte: startDate, $lte: endDate };
+      }
+    });
+  
+    if (filter.status) {
+      filters.status = { $in: [] };
+      Object.entries(filter.status).forEach(([statusKey, statusValue]) => {
+        if(statusValue=="true") filters.status.$in.push(statusKey);
+     
+      });
+      if (filters.status.$in.length === 0) {
+        delete filters.status; 
+      }
+      
+    }
+  }
     const userId = user._id;
     try {
-      if (!page || parseInt(page) <= 0) page = 1; // valid page check
-
-      if (!sort) sort = "createdAt"; // default createdAt sorting
-
-      if (!orderBy) orderBy = -1; // default DESC
-
-      if (orderBy) orderBy = orderBy.toLowerCase() === "asc" ? 1 : -1;
+     
 
       // maybe it could be constant
       const allowedFilters = ["title", "status", "userId", "description"];
 
-      if (filterBy && filterBy.includes(":")) {
-        const [filterKey, filterValue] = filterBy.split(":");
+      // if (filterBy && filterBy.includes(":")) {
+      //   const [filterKey, filterValue] = filterBy.split(":");
 
-        if (
-          filterKey === "userId" &&
-          !hasRole(roles, ROLES_LIST.admin) &&
-          filterValue !== userId.toString()
-        ) {
-          throw Forbidden; // unauthorized entry
-        } else if (allowedFilters.includes(filterKey)) {
-          where[filterKey] =
-            filterKey === "userId" && !hasRole(roles, ROLES_LIST.admin)
-              ? userId.toString()
-              : filterValue;
-        } else {
-          throw BadRequest; // invalid filter key
-        }
-      }
+      //   if (
+      //     filterKey === "userId" &&
+      //     !hasRole(roles, ROLES_LIST.admin) &&
+      //     filterValue !== userId.toString()
+      //   ) {
+      //     throw Forbidden; // unauthorized entry
+      //   } else if (allowedFilters.includes(filterKey)) {
+      //     where[filterKey] =
+      //       filterKey === "userId" && !hasRole(roles, ROLES_LIST.admin)
+      //         ? userId.toString()
+      //         : filterValue;
+      //   } else {
+      //     throw BadRequest; // invalid filter key
+      //   }
+      // }
       const skip = (parseInt(page) - 1) * parseInt(size);
 
       if (hasRole(roles, ROLES_LIST.admin)) {
@@ -73,14 +95,14 @@ class TaskService extends BaseService {
           where.userId = userId;
         }
       }
-      const tasks = await Task.find({ ...where })
+      const tasks = await Task.find({ ...where, ...filters})
         .skip(skip)
         .limit(size)
-        .sort({ [sort]: orderBy })
+        .sort(sortOrder)
         .populate("userId", "name email -_id")
         .populate("assignedTo", "name email -_id");
 
-      const total = await Task.countDocuments({ ...where });
+      const total = await Task.countDocuments({ ...where,...filters });
       const pageCount = Math.ceil(total / parseInt(size));
 
       const meta = {
