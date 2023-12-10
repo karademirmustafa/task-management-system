@@ -3,23 +3,23 @@ import { createSlice } from '@reduxjs/toolkit';
 const stateSlice = createSlice({
   name: 'taskList/state',
   initialState: {
-    deleteConfirmation: false,
-    selectedTask: '',
-    sortedColumn: () => {}
+    dropdownDateFilter:false,
+    dropdownStatusFilter:false,
+    dropdownSortBy:false
   },
   reducers: {
-    toggleDeleteConfirmation: (state, action) => {
-      state.deleteConfirmation = action.payload;
+    toggleDateFilter: (state,action) => {
+      state.dropdownDateFilter=action.payload;
     },
-    setSortedColumn: (state, action) => {
-      state.sortedColumn = action.payload;
+    toggleStatusFilter: (state,action) => {
+      state.dropdownStatusFilter=action.payload;
     },
-    setSelectedTask: (state, action) => {
-      state.selectedTask = action.payload;
-    }
+    toggleSortBy: (state,action) => {
+      state.dropdownSortBy=action.payload;
+    },
   }
 });
 
-export const { toggleDeleteConfirmation, setSortedColumn, setSelectedBonus } = stateSlice.actions;
+export const { toggleDateFilter, toggleStatusFilter, toggleSortBy } = stateSlice.actions;
 
 export default stateSlice.reducer;

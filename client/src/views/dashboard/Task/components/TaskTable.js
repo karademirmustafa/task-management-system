@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTasks, setFilterDatas, initialFilterData } from '../store/dataSlice';
+import { getTasks, initialFilterData } from '../store/dataSlice';
 import { Loading, Table } from 'components/shared';
 import { Button } from 'components/ui';
 import { useNavigate } from 'react-router-dom';

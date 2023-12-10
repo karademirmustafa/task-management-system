@@ -3,19 +3,32 @@ import { Button } from 'components/ui';
 import { HiCalendar } from 'react-icons/hi';
 import OutsideClickHandler from 'react-outside-click-handler';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleDateFilter } from '../store/stateSlice';
+import { getTasks, setFilter } from '../store/dataSlice';
 
-const TaskDateFilter = ({ handleDateFilter }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dueDateRange, setDueDateRange] = useState({ start: '', end: '' });
-  const [createdAtRange, setCreatedAtRange] = useState({ start: '', end: '' });
+const TaskDateFilter = () => {
+  const dispatch = useDispatch();
+  const dropdownDateFilter = useSelector((state) => state.taskList.state.dropdownDateFilter);
+  const filter = useSelector((state) => state.taskList.data.filterData.filter);
+  const filterData = useSelector((state) => state.taskList.data.filterData);
+
+  const [dueDateRange, setDueDateRange] = useState({
+    start: filter?.dueDate?.start ?? '',
+    end: filter?.dueDate?.end ?? ''
+  });
+  const [createdAtRange, setCreatedAtRange] = useState({
+    start: filter?.createdAt?.start ?? '',
+    end: filter?.createdAt?.end ?? ''
+  });
 
   const buttonRef = useRef(null);
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    dispatch(toggleDateFilter(!dropdownDateFilter));
   };
 
   const closeDropdown = () => {
-    setIsDropdownOpen(false);
+    dispatch(toggleDateFilter(false));
   };
 
   const applyFilter = () => {
@@ -28,11 +41,15 @@ const TaskDateFilter = ({ handleDateFilter }) => {
     if (createdAtRange.start && createdAtRange.end) {
       filters.createdAt = createdAtRange;
     }
+
     if (Object.keys(filters).length > 0) {
-      handleDateFilter(filters);
+      dispatch(setFilter({ ...filters }));
+
+      dispatch(getTasks({ ...filterData ,filter:{...filters}}));
+
       closeDropdown();
     } else {
-      toast.error("Please select start and end date ")
+      toast.error('Please select start and end date ');
     }
     closeDropdown();
   };
@@ -40,11 +57,11 @@ const TaskDateFilter = ({ handleDateFilter }) => {
   return (
     <div className="relative inline-block text-left w-full">
       <OutsideClickHandler onOutsideClick={closeDropdown}>
-        <Button ref={buttonRef} icon={<HiCalendar />} block onClick={toggleDropdown}>
+        <Button type="button" ref={buttonRef} icon={<HiCalendar />} block onClick={toggleDropdown}>
           Date Range
         </Button>
 
-        {isDropdownOpen && (
+        {dropdownDateFilter && (
           <div className="origin-top-right absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
             <div className="py-2 px-4">
               <div>
@@ -78,9 +95,7 @@ const TaskDateFilter = ({ handleDateFilter }) => {
                 />
               </div>
               <div className="mt-4">
-                <Button onClick={applyFilter}>
-                  Apply
-                </Button>
+                <Button onClick={applyFilter}>Apply</Button>
               </div>
             </div>
           </div>

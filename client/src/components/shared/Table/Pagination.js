@@ -70,7 +70,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, pageSize, totalItem
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
         >
-          {[1, 25, 50, 100].map((size) => (
+          {[10, 25, 50, 100].map((size) => (
             <option key={size} value={size}>
               {size}
             </option>

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Button } from 'components/ui';
 import {
-  HiFilter,
   HiOutlineClock,
   HiOutlineCheck,
   HiOutlineX,
@@ -9,18 +8,25 @@ import {
   HiChevronUp
 } from 'react-icons/hi';
 import OutsideClickHandler from 'react-outside-click-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleStatusFilter } from '../store/stateSlice';
+import { getTasks, setFilter } from '../store/dataSlice';
 
-const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState(currentFilter || {});
+const TaskStatusFilter = () => {
+
+  const dispatch = useDispatch();
+  const dropdownStatusFilter = useSelector(state => state.taskList.state.dropdownStatusFilter);
+  const filter = useSelector((state) => state.taskList.data.filterData.filter);
+  const filterData = useSelector((state) => state.taskList.data.filterData);
+  const [selectedFilters, setSelectedFilters] = useState({});
   const buttonRef = useRef(null);
 
   const handleFilterToggle = () => {
-    setIsFilterOpen(!isFilterOpen);
+    dispatch(toggleStatusFilter(!dropdownStatusFilter));
   };
 
   const closeDropdown = () => {
-    setIsFilterOpen(false);
+    dispatch(toggleStatusFilter(false));
   };
 
   const filterOptions = [
@@ -36,7 +42,8 @@ const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
     });
   };
   const applyFilters = () => {
-    handleFilter(selectedFilters);
+    dispatch(setFilter({...selectedFilters}))
+    dispatch(getTasks({ ...filterData ,filter:{status:{...selectedFilters}}}));
     closeDropdown();
   };
 
@@ -44,14 +51,15 @@ const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
     <div className="relative inline-block text-left w-full">
       <OutsideClickHandler onOutsideClick={closeDropdown}>
         <Button
+          type="button"
           ref={buttonRef}
-          icon={isFilterOpen ? <HiChevronUp /> : <HiChevronDown />}
+          icon={dropdownStatusFilter ? <HiChevronUp /> : <HiChevronDown />}
           block
           onClick={handleFilterToggle}>
           Status
         </Button>
 
-        {isFilterOpen && (
+        {dropdownStatusFilter && (
           <div className="origin-top-right absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
             <div className="py-1">
               {filterOptions.map((option) => (
