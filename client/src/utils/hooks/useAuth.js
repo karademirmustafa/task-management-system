@@ -32,8 +32,7 @@ function useAuth() {
           dispatch(setAuthority(profile.data.data.roles));
         }, 500);
         setTimeout(async () => {
-          const redirectUrl = query.get(REDIRECT_URL_KEY);
-          navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath);
+          navigate(appConfig.authenticatedEntryPath);
           return {
             status: 'success',
             message: ''
