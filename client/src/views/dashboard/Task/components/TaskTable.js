@@ -12,16 +12,16 @@ export default function TaskTable() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { pageIndex,pageCount, pageSize, sort, query, total } = useSelector(
-    (state) => state.taskList?.data.tableData
-  );
-
   const loading = useSelector((state) => state.taskList.data.loading);
   const data = useSelector((state) => state.taskList.data.taskList.data);
-  const tableData = useMemo(
-    () => ({ pageIndex, pageSize, sort, query, total }),
-    [pageIndex, pageSize, sort, query, total]
+
+  const { pageIndex, pageCount, pageSize, sort, query, total } = useSelector(
+    (state) => state.taskList?.data.tableData
   );
+  // const tableData = useMemo(
+  //   () => ({ pageIndex, pageSize, sort, query, total }),
+  //   [pageIndex, pageSize, sort, query, total]
+  // );
 
   const handlePageChange = (newPage) => {
     dispatch(getTasks({ ...initialFilterData, page: newPage }));
@@ -162,6 +162,8 @@ export default function TaskTable() {
         currentPage={pageIndex}
         totalPages={pageCount}
         onPageChange={handlePageChange}
+        totalItems={total}
+        pageSize={pageSize}
       />
     </>
   );

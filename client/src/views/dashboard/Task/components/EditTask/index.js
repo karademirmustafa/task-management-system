@@ -54,23 +54,20 @@ if (!data) {
           title:data?.title,
           description:data?.description,
           dueDate:data?.dueDate,
-          status:data?.status,
-          history:data?.history,
-          assignedTo:data?.assignedTo,
-          userId:data?.userId,
-          createdAt:data?.createdAt
+          // status:data?.status,
+          // assignedTo:data?.assignedTo,
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const response = await apiEditTask(values);
+            const response = await apiEditTask(values,params.id);
 
             if (response.data && response.data.status) {
-              toast.success('Task successfully created');
+              toast.success('Task successfully edited');
 
               setTimeout(() => {
                 navigate(`/tasks`);
-              }, 200);
+              }, 500);
             } else {
               toast.error(response.data.message);
             }
