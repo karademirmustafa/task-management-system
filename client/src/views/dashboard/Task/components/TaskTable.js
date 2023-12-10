@@ -24,7 +24,10 @@ export default function TaskTable() {
   // );
 
   const handlePageChange = (newPage) => {
-    dispatch(getTasks({ ...initialFilterData, page: newPage }));
+    dispatch(getTasks({ ...initialFilterData, page: newPage,size:pageSize }));
+  };
+  const handlePageSizeChange = (newPageSize) => {
+    dispatch(getTasks({ ...initialFilterData, page: 1, size: newPageSize })); // Fetch data with new page size, reset to first page
   };
   const handleRemoveTask = (id) => {
     Swal.fire({
@@ -164,6 +167,7 @@ export default function TaskTable() {
         onPageChange={handlePageChange}
         totalItems={total}
         pageSize={pageSize}
+        onPageSizeChange={handlePageSizeChange}
       />
     </>
   );
