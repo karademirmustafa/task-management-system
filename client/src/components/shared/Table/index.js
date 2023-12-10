@@ -5,7 +5,7 @@ import TableRow from './TableRow';
 import Pagination from './Pagination';
 
 const TableComponent = (props) => {
-  const { data = [], columns = [], loading, currentPage, totalPages, onPageChange } = props;
+  const { data = [], columns = [], loading, currentPage, totalPages, onPageChange,totalItems,pageSize } = props;
   return (
     <>
       {loading && <Loading />}
@@ -31,6 +31,8 @@ const TableComponent = (props) => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={onPageChange}
+                totalItems={totalItems}
+                pageSize={pageSize}
               />
           </div>
         </>
