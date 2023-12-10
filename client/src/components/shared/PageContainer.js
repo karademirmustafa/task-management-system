@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from 'components/layout/AuthLayout/header';
-import Sidebar from 'components/layout/AuthLayout/sidebar';
+import Header from 'components/layout/AppLayout/header';
+import Sidebar from 'components/layout/AppLayout/sidebar';
 
 const PageContainer = (props) => {
   const { children } = props;

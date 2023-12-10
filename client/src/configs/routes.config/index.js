@@ -2,7 +2,8 @@ import React from 'react';
 import authRoute from './authRoute';
 import permissionRoute from './permissionRoute';
 import {ADMIN,MANAGER,USER} from "constants/roles.constant"
-export const publicRoutes = [...authRoute,...permissionRoute];
+import publicRoute from './publicRoute';
+export const publicRoutes = [...authRoute,...permissionRoute,...publicRoute];
 
 export const protectedRoutes = [
   {

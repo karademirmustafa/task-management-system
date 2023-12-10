@@ -1,14 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import navigationConfig from 'configs/navigation.config';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 import { AuthorityCheck } from 'components/shared';
 import navigationIcon from 'configs/icon.config';
+import classNames from 'classnames';
 const Sidebar = (props) => {
   const { children } = props;
 
   const sidebarOpen = useSelector((state) => state.base.common.sidebarOpen);
   const userAuthority = useSelector((state) => state.auth.authority.roles);
+
+  const location = useLocation();
+  const currentPath = location.pathname;
   return (
     <div className="absolute top-[75px] right-0 w-full overflow-y-auto max-h-[calc(100vh_-_100px)] min-h-[calc(100vh_-_100px)] h-full ">
       {sidebarOpen && (
@@ -24,7 +28,11 @@ const Sidebar = (props) => {
                   <li>
                     <Link
                       to={nav.path}
-                      className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
+                      className={classNames(
+                        "flex items-center p-2 text-gray-900 rounded-lg group",
+                        { "bg-gray-300 cursor-not-allowed": currentPath === nav.path, "hover:bg-gray-100": currentPath !== nav.path }
+                      )}
+                      >
                       <span className="text-2xl">{navigationIcon[nav.icon]}</span>
 
                       <span className="ms-3">{nav.title}</span>

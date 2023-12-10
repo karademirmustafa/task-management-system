@@ -3,7 +3,7 @@ import React, { memo, useMemo, lazy, Suspense } from 'react';
 
 const Layout = () => {
   const AppLayout = useMemo(() => {
-    return lazy(() => import('./AuthLayout'));
+    return lazy(() => import('./AppLayout'));
   }, []);
 
   return (
