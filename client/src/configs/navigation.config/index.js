@@ -18,8 +18,16 @@ const navigationConfig = [
     access: [USER]
   },
   {
-    key: '/my-tasks',
-    path: '/my-tasks',
+    key: '/tasks',
+    path: '/tasks',
+    title: 'Tasks',
+    icon: 'my-tasks',
+    authority: [USER],
+    access: [USER]
+  },
+  {
+    key: '/tasks/my-tasks',
+    path: '/tasks/my-tasks',
     title: 'My Tasks',
     icon: 'my-tasks',
     authority: [USER],

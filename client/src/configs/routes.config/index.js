@@ -3,9 +3,11 @@ import authRoute from './authRoute';
 import permissionRoute from './permissionRoute';
 import {ADMIN,MANAGER,USER} from "constants/roles.constant"
 import publicRoute from './publicRoute';
+import taskRoute from './taskRoute';
 export const publicRoutes = [...authRoute,...permissionRoute,...publicRoute];
 
 export const protectedRoutes = [
+  ...taskRoute,
   {
     key: 'home',
     path: '/home',
