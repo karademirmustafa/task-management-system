@@ -1,5 +1,6 @@
 import { Loading } from 'components/shared';
 import React, { memo, useMemo, lazy, Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 const Layout = () => {
   const AppLayout = useMemo(() => {
@@ -7,14 +8,17 @@ const Layout = () => {
   }, []);
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex flex-auto flex-col h-[100vh]">
-          <Loading loading={true} />
-        </div>
-      }>
-      <AppLayout />
-    </Suspense>
+    <>
+      <Suspense
+        fallback={
+          <div className="flex flex-auto flex-col h-[100vh]">
+            <Loading loading={true} />
+          </div>
+        }>
+        <AppLayout />
+      </Suspense>
+       <Toaster position='bottom-center'/>
+    </>
   );
 };
 
