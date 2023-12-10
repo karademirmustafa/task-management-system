@@ -1,7 +1,7 @@
 import React from "react";
 import View from "views";
 
-const AuthLayout = (props) => {
+const AppLayout = (props) => {
   return (
     <div className="app-layout-blank flex flex-auto flex-col h-[100vh]">
       <View {...props} />
@@ -9,4 +9,4 @@ const AuthLayout = (props) => {
   );
 };
 
-export default AuthLayout;
+export default AppLayout;

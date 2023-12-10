@@ -17,7 +17,7 @@ function useAuth() {
   const query = useQuery();
 
   const { token, signedIn } = useSelector((state) => state.auth.session);
-  const { id } = useSelector((state) => state.auth.user);
+  const { _id } = useSelector((state) => state.auth.user);
 
   const signIn = async (values) => {
     try {
@@ -32,8 +32,7 @@ function useAuth() {
           dispatch(setAuthority(profile.data.data.roles));
         }, 500);
         setTimeout(async () => {
-          const redirectUrl = query.get(REDIRECT_URL_KEY);
-          navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath);
+          navigate(appConfig.authenticatedEntryPath);
           return {
             status: 'success',
             message: ''
@@ -92,7 +91,7 @@ function useAuth() {
   };
 
   return {
-    authenticated: token && signedIn && id,
+    authenticated: token && signedIn && _id,
     signIn,
     signUp,
     signOut
