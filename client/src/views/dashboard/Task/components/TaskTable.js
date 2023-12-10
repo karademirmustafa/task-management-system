@@ -12,17 +12,20 @@ export default function TaskTable() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //   const { pageIndex, pageSize, sort, query, total } = useSelector(
-  //     (state) => state.taskList?.data.tableData
-  //   );
+  const { pageIndex,pageCount, pageSize, sort, query, total } = useSelector(
+    (state) => state.taskList?.data.tableData
+  );
 
   const loading = useSelector((state) => state.taskList.data.loading);
   const data = useSelector((state) => state.taskList.data.taskList.data);
-  //   const tableData = useMemo(
-  //     () => ({ pageIndex, pageSize, sort, query, total }),
-  //     [pageIndex, pageSize, sort, query, total]
-  //   );
+  const tableData = useMemo(
+    () => ({ pageIndex, pageSize, sort, query, total }),
+    [pageIndex, pageSize, sort, query, total]
+  );
 
+  const handlePageChange = (newPage) => {
+    dispatch(getTasks({ ...initialFilterData, page: newPage }));
+  };
   const handleRemoveTask = (id) => {
     Swal.fire({
       title: 'Are you sure you want to delete this task?',
@@ -38,18 +41,18 @@ export default function TaskTable() {
         try {
           const resp = await apiRemoveTask(id);
           if (resp.data.status) {
-            toast.success("Task successfully deleted!");
-            navigate('/tasks');
+            dispatch(getTasks(initialFilterData));
+            toast.success('Task successfully deleted!');
           } else {
-            toast.error("Failed to delete task!");
+            toast.error('Failed to delete task!');
           }
         } catch (err) {
-          toast.error(err?.response?.data?.message || err.toString() || "Failed to delete task!");
+          toast.error(err?.response?.data?.message || err.toString() || 'Failed to delete task!');
         }
       }
     });
   };
-  
+
   const columns = [
     {
       key: 'title',
@@ -124,7 +127,6 @@ export default function TaskTable() {
               type="button"
               icon={<HiPencil />}
               size="sm"
-              className="bg-blue-600 text-white"
               onClick={() => navigate(`/tasks/${props._id}`)}>
               Edit
             </Button>
@@ -132,8 +134,9 @@ export default function TaskTable() {
               type="button"
               icon={<HiTrash />}
               size="sm"
-              className="bg-red-600 text-white"
-              onClick={() => {handleRemoveTask(props._id)}}>
+              onClick={() => {
+                handleRemoveTask(props._id);
+              }}>
               Remove
             </Button>
           </div>
@@ -152,7 +155,14 @@ export default function TaskTable() {
   return (
     <>
       {loading && <Loading />}
-      <Table columns={columns} data={data} loading={loading} />
+      <Table
+        columns={columns}
+        data={data}
+        loading={loading}
+        currentPage={pageIndex}
+        totalPages={pageCount}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 }

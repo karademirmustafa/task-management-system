@@ -50,6 +50,8 @@ const dataSlice = createSlice({
     [getTasks.fulfilled]: (state, action) => {
       state.taskList = action.payload;
       state.tableData.pageSize = action.payload.meta.pageSize;
+      state.tableData.pageCount = action.payload.meta.pageCount;
+      state.tableData.pageIndex = action.payload.meta.pageIndex;
       state.tableData.total = action.payload.meta.total;
       state.loading = false;
     },
