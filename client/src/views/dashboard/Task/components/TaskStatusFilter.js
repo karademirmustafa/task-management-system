@@ -1,6 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { Button } from 'components/ui';
-import { HiFilter, HiOutlineClock, HiOutlineCheck, HiOutlineX, HiChevronDown, HiChevronUp } from 'react-icons/hi';
+import {
+  HiFilter,
+  HiOutlineClock,
+  HiOutlineCheck,
+  HiOutlineX,
+  HiChevronDown,
+  HiChevronUp
+} from 'react-icons/hi';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
@@ -19,16 +26,15 @@ const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
   const filterOptions = [
     { key: 'pending', label: 'Pending', icon: <HiOutlineClock /> },
     { key: 'completed', label: 'Completed', icon: <HiOutlineCheck /> },
-    { key: 'waiting', label: 'Waiting', icon: <HiOutlineX /> },
+    { key: 'waiting', label: 'Waiting', icon: <HiOutlineX /> }
   ];
 
   const onFilterOptionClick = (filterKey) => {
     setSelectedFilters({
       ...selectedFilters,
-      [filterKey]: !selectedFilters[filterKey],
+      [filterKey]: !selectedFilters[filterKey]
     });
   };
-
   const applyFilters = () => {
     handleFilter(selectedFilters);
     closeDropdown();
@@ -37,7 +43,11 @@ const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
   return (
     <div className="relative inline-block text-left w-full">
       <OutsideClickHandler onOutsideClick={closeDropdown}>
-        <Button ref={buttonRef} icon={isFilterOpen ? <HiChevronUp /> : <HiChevronDown />} block onClick={handleFilterToggle}>
+        <Button
+          ref={buttonRef}
+          icon={isFilterOpen ? <HiChevronUp /> : <HiChevronDown />}
+          block
+          onClick={handleFilterToggle}>
           Status
         </Button>
 
@@ -45,7 +55,9 @@ const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
           <div className="origin-top-right absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
             <div className="py-1">
               {filterOptions.map((option) => (
-                <label key={option.key} className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <label
+                  key={option.key}
+                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                   <input
                     type="checkbox"
                     checked={!!selectedFilters[option.key]}
@@ -57,7 +69,7 @@ const TaskStatusFilter = ({ handleFilter, currentFilter }) => {
                 </label>
               ))}
               <div className="px-4 py-2 text-sm">
-                <button className="bg-blue-500 text-white p-2 rounded" onClick={applyFilters}>Apply</button>
+                <Button onClick={applyFilters}>Apply</Button>
               </div>
             </div>
           </div>

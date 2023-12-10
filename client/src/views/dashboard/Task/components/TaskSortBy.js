@@ -26,6 +26,7 @@ const TaskSortBy = ({ handleSort }) => {
   ];
 
   const handleSelectChange = (selected) => {
+  
     setSelectedOptions(selected);
     const newSortDirections = selected.reduce((acc, option) => {
       acc[option.value] = acc[option.value] || 'asc';
@@ -33,7 +34,7 @@ const TaskSortBy = ({ handleSort }) => {
     }, {});
     setSortDirections(newSortDirections);
   };
-
+console.log(sortDirections,"SORT DİRECTİONS")
   const toggleSortDirection = (field) => {
     setSortDirections({
       ...sortDirections,
@@ -51,7 +52,7 @@ const TaskSortBy = ({ handleSort }) => {
 
   return (
     <div className="relative inline-block text-left w-full">
-      <Button ref={buttonRef} icon={<HiSortAscending />} onClick={handleSortToggle} block>Sort By</Button>
+      <Button type="button" ref={buttonRef} icon={<HiSortAscending />} onClick={handleSortToggle} block>Sort By</Button>
 
       {isSortOpen && (
         <OutsideClickHandler onOutsideClick={closeDropdown}>

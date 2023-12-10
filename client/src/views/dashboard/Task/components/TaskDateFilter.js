@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Button } from 'components/ui';
 import { HiCalendar } from 'react-icons/hi';
 import OutsideClickHandler from 'react-outside-click-handler';
+import toast from 'react-hot-toast';
 
 const TaskDateFilter = ({ handleDateFilter }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -18,7 +19,21 @@ const TaskDateFilter = ({ handleDateFilter }) => {
   };
 
   const applyFilter = () => {
-    handleDateFilter({ dueDate: dueDateRange, createdAt: createdAtRange });
+    let filters = {};
+
+    if (dueDateRange.start && dueDateRange.end) {
+      filters.dueDate = dueDateRange;
+    }
+
+    if (createdAtRange.start && createdAtRange.end) {
+      filters.createdAt = createdAtRange;
+    }
+    if (Object.keys(filters).length > 0) {
+      handleDateFilter(filters);
+      closeDropdown();
+    } else {
+      toast.error("Please select start and end date ")
+    }
     closeDropdown();
   };
 
