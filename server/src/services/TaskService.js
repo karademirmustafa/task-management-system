@@ -39,7 +39,12 @@ class TaskService extends BaseService {
 
       if (!orderBy) orderBy = -1; // default DESC
 
-      if (orderBy) orderBy = orderBy.toLowerCase() === "asc" ? 1 : -1;
+      if (typeof orderBy == "string")
+        orderBy = orderBy && orderBy.toLowerCase() === "asc" ? 1 : -1;
+
+      // orderBy check -1 or 1
+      orderBy = parseInt(orderBy);
+      if (orderBy !== 1) orderBy = -1;
 
       // maybe it could be constant
       const allowedFilters = ["title", "status", "userId", "description"];
