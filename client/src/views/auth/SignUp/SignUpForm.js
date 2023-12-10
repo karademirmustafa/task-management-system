@@ -7,9 +7,9 @@ import { Alert, Button, FormContainer, FormItem, Input } from 'components/ui';
 import useAuth from 'utils/hooks/useAuth';
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required('Lütfen e-posta girin'),
-  password: Yup.string().required('Lütfen şifrenizini girin'),
-  name: Yup.string().required('Lütfen isminizi  girin')
+  email: Yup.string().required('Please enter your e-mail'),
+  password: Yup.string().required('Please enter your password'),
+  name: Yup.string().required('Please enter your name')
 });
 
 const SignUpForm = (props) => {
@@ -98,7 +98,7 @@ const SignUpForm = (props) => {
                     </FormContainer>
 
                     <Button type="submit" block loading={isSubmitting}>
-                      {isSubmitting ? 'Kayıt olunuyor...' : 'Kayıt Ol'}
+                      {isSubmitting ? 'Registering...' : 'Register'}
                     </Button>
                   </Form>
                 </div>
