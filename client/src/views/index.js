@@ -2,7 +2,7 @@ import AppRoute from 'components/route/AppRoute';
 import PublicRoute from 'components/route/PublicRoute';
 import React, { Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { publicRoutes,protectedRoutes } from 'configs/routes.config';
+import { publicRoutes, protectedRoutes } from 'configs/routes.config';
 import appConfig from 'configs/app.config';
 import { useSelector } from 'react-redux';
 import AuthorityGuard from 'components/route/AuthorityGuard';
@@ -30,9 +30,9 @@ const AllRoutes = (props) => {
                 userAuthority={userAuthority}
                 access={route.access}
                 authority={route.authority}>
-                  <PageContainer header={true} sidebar={true}>
+                <PageContainer>
                   <AppRoute routeKey={route.key} component={route.component} {...route.meta} />
-                  </PageContainer>
+                </PageContainer>
               </AuthorityGuard>
             }
           />
@@ -46,7 +46,11 @@ const AllRoutes = (props) => {
           <Route
             key={route.path}
             path={route.path}
-            element={<AppRoute routeKey={route.key} component={route.component} {...route.meta} />}
+            element={
+              // <PageContainer>
+                <AppRoute routeKey={route.key} component={route.component} {...route.meta} />
+              // </PageContainer>
+            }
           />
         ))}
       </Route>
