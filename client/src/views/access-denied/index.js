@@ -1,3 +1,6 @@
+import { Button } from 'components/ui';
+import { Link } from 'react-router-dom';
+
 const AccessDenied = () => {
   return (
     <div className="h-full flex flex-auto flex-col">
@@ -7,8 +10,11 @@ const AccessDenied = () => {
             <div className="container mx-auto h-full">
               <div className="h-full flex flex-col items-center justify-center">
                 <div className="mt-6 text-center">
-                  <h3 className="mb-2">Erişim Hatası!</h3>
-                  <p className="text-base">Bu Sayfaya Erişim Yetkiniz Yok</p>
+                  <h3 className="mb-2">Access Denied!</h3>
+                  <p className="text-base mb-2">You are not authorized to access this page</p>
+                  <Link to="/">
+                    <Button>Go to Home Page</Button>
+                  </Link>
                 </div>
               </div>
             </div>
