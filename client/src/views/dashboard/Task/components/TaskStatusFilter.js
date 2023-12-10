@@ -42,7 +42,7 @@ const TaskStatusFilter = () => {
     });
   };
   const applyFilters = () => {
-    dispatch(setFilter({...selectedFilters}))
+    dispatch(setFilter({status:{...selectedFilters}}))
     dispatch(getTasks({ ...filterData ,filter:{status:{...selectedFilters}}}));
     closeDropdown();
   };

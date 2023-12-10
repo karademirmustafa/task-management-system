@@ -21,7 +21,7 @@ export const initialFilterData = {
   orderBy: -1,
   page: 1,
   size: 10,
-  sort: { createdAt: 'asc' },
+  sort: { createdAt: 'desc' },
   filter: {}
 };
 
@@ -45,7 +45,7 @@ const dataSlice = createSlice({
       state.filterData.filter = { ...state.filterData.filter, ...action.payload };
     },
     setSort: (state, action) => {
-      state.filterData.filter.sort = { ...state.filterData.filter.sort, ...action.payload };
+      state.filterData.sort = { ...state.filterData.sort, ...action.payload };
     },
     setFilterData: (state, action) => {
       state.filterData = action.payload;

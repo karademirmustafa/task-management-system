@@ -14,7 +14,7 @@ export default function TaskTable() {
 
   const loading = useSelector((state) => state.taskList.data.loading);
   const data = useSelector((state) => state.taskList.data.taskList.data);
-
+  const filterData = useSelector(state => state.taskList.data.filterData)
   const { pageIndex, pageCount, pageSize, sort, query, total } = useSelector(
     (state) => state.taskList?.data.tableData
   );
@@ -22,9 +22,8 @@ export default function TaskTable() {
   //   () => ({ pageIndex, pageSize, sort, query, total }),
   //   [pageIndex, pageSize, sort, query, total]
   // );
-
   const handlePageChange = (newPage) => {
-    dispatch(getTasks({ ...initialFilterData, page: newPage,size:pageSize }));
+    dispatch(getTasks({ ...filterData, page: newPage,size:pageSize }));
   };
   const handlePageSizeChange = (newPageSize) => {
     dispatch(getTasks({ ...initialFilterData, page: 1, size: newPageSize })); // Fetch data with new page size, reset to first page
