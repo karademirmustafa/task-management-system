@@ -162,7 +162,7 @@ const Button = React.forwardRef((props, ref) => {
       return (
         <span className="flex items-center justify-center">
           <span className="text-lg">{icon}</span>
-          <span className="ltr:ml-1 rtl:mr-1">{children}</span>
+          <span className="ml-1">{children}</span>
         </span>
       );
     }
