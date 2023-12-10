@@ -27,11 +27,10 @@ export async function apiEditTask(data,id) {
     data
   });
 }
-export async function apiRemoveTask(data,id) {
+export async function apiRemoveTask(id) {
   return ApiService.fetchData({
     url: `/tasks/${id}`,
     method: 'delete',
-    data
   });
 }
 
