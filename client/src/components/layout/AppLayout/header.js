@@ -33,9 +33,9 @@ const Header = () => {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, log out',
       cancelButtonText: 'No'
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        signOut();
+        await signOut();
       }
     });
   };
