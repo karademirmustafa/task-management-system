@@ -29,11 +29,14 @@ class TaskService extends BaseService {
     page = Math.max(1, parseInt(page) || 1);
     size = parseInt(size) || 10;
 
+
     const sortOrder = {};
     sort &&
       Object.keys(sort).forEach((key) => {
         sortOrder[key] = sort[key] === "asc" ? 1 : -1;
       });
+
+ 
 
     const filters = {};
     if (filter) {
