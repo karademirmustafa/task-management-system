@@ -31,7 +31,8 @@ const dataSlice = createSlice({
     taskList: [],
     tableData: initialTableData,
     filterData: initialFilterData,
-    countFormExt1: 0
+    countFormExt1: 0,
+    task:{}
   },
   reducers: {
     updateTaskList: (state, action) => {
@@ -51,7 +52,7 @@ const dataSlice = createSlice({
     },
     setCountFormExt1: (state, action) => {
       state.countFormExt1 = action.payload;
-    }
+    },
   },
   extraReducers: {
     [getTasks.fulfilled]: (state, action) => {

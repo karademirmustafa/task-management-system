@@ -13,7 +13,6 @@ const TaskTableTools = () => {
       <TaskDateFilter />
       <TaskStatusFilter />
       <TaskSortBy />
-
       <Link to={`/tasks/add-task`} className="block lg:inline-block md:mx-2  md:ml-2 lg:ml-2 w-full">
         <Button variant="default" block size="sm" icon={<HiPlus />}>
           Create Task

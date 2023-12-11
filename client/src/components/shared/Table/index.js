@@ -6,6 +6,7 @@ import Pagination from './Pagination';
 
 const TableComponent = (props) => {
   const { data = [], columns = [], loading, currentPage, totalPages, onPageChange,totalItems,pageSize ,onPageSizeChange} = props;
+  
   return (
     <>
       {loading && <Loading />}
