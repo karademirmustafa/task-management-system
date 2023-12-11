@@ -72,9 +72,19 @@ State management is handled using Redux Toolkit and Context API for specific par
 2. **Advanced Filtering and Sorting:** Advanced filtering and sorting capabilities are added to provide users with powerful tools for organizing their tasks.
 
 
-
+## How to run
+1. Clone this repository to your computer.
+2. You need to have **mongodb** installed on your computer. If you don't, you can run a mongodb instance by using **docker-compose.yml**. 
+If you need to use docker-compose.yml, you can run this command :
+```
+docker-compose up -d
+```
+3. You need to specify the **mongodb** url in the **.env** file.
+4. You need to have **npm** installed. 
+5. Inside the server and client folder, run the commands below.
+   
 ## Getting Started
-
+After starting Docker -->
 Follow these steps to set up and run the project locally:
 
 1. **Clone Repository:**
