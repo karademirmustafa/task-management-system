@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import { apiGetTask, apiEditTask } from 'services/TaskService';
 import toast from 'react-hot-toast';
 import { Loading } from 'components/shared';
+import Select from 'react-select';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
@@ -38,29 +39,51 @@ const EditTask = () => {
       setError(true);
     }
   };
-if (!data) {
-  return <div className="flex flex-auto flex-col h-[80vh]">
-  <Loading loading={true} />
-</div>
-}
+  if (!data) {
+    return (
+      <div className="flex flex-auto flex-col h-[80vh]">
+        <Loading loading={true} />
+      </div>
+    );
+  }
   if (error) {
     return <Navigate to="/access-denied" replace />;
   }
+
+  const statusOptions = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'waiting', label: 'Waiting' },
+    { value: 'completed', label: 'Completed' }
+  ];
+  const formatDueDate = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+  };
   return (
     <div>
       <h5 className={'mb-6'}>Edit Task</h5>
       <Formik
         initialValues={{
-          title:data?.title,
-          description:data?.description,
-          dueDate:data?.dueDate,
-          // status:data?.status,
-          // assignedTo:data?.assignedTo,
+          title: data?.title,
+          description: data?.description,
+          dueDate: formatDueDate(data?.dueDate) || null,
+          status: data?.status,
+          assignedTo: data?.assignedTo
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const response = await apiEditTask(values,params.id);
+            const response = await apiEditTask(values, params.id);
 
             if (response.data && response.data.status) {
               toast.success('Task successfully edited');
@@ -110,12 +133,27 @@ if (!data) {
                   invalid={errors.dueDate && touched.dueDate}
                   errorMessage={errors.dueDate}>
                   <Field
-                    type="text"
+                    type="date"
                     autoComplete="off"
                     name="dueDate"
                     placeholder=""
                     component={Input}
                   />
+                </FormItem>
+                <FormItem
+                  label="Status"
+                  invalid={errors.status && touched.status}
+                  errorMessage={errors.status}>
+                  <Field name="status">
+                    {({ field, form }) => (
+                      <Select
+                        options={statusOptions}
+                        name="status"
+                        value={statusOptions.find((option) => option.value === field.value)}
+                        onChange={(option) => form.setFieldValue(field.name, option.value)}
+                      />
+                    )}
+                  </Field>
                 </FormItem>
               </div>
 
@@ -143,6 +181,5 @@ if (!data) {
     </div>
   );
 };
-
 
 export default EditTask;
