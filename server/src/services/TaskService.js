@@ -23,50 +23,51 @@ class TaskService extends BaseService {
 
   async getTasks(params) {
     const { next, query, where, user, roles } = params;
-    console.log(params, "params");
+    // console.log(params, "params");
     let { page, size, sort, filter } = query;
 
-   page = Math.max(1, parseInt(page) || 1);
-  size = parseInt(size) || 10;
+    page = Math.max(1, parseInt(page) || 1);
+    size = parseInt(size) || 10;
 
-  const sortOrder = {};
-  sort && Object.keys(sort).forEach(key => {
-    sortOrder[key] = sort[key] === "asc" ? 1 : -1;
-  });
-
-  const filters={}
-  if (filter) {
-    ['dueDate', 'createdAt'].forEach(dateField => {
-      if (filter[dateField] && filter[dateField].start && filter[dateField].end) {
-        const startDate = new Date(filter[dateField].start);
-        const endDate = new Date(filter[dateField].end);
-        endDate.setHours(23, 59, 59, 999);
-  
-        filters[dateField] = { $gte: startDate, $lte: endDate };
-      }
-    });
-  
-    if (filter.status) {
-      filters.status = { $in: [] };
-      Object.entries(filter.status).forEach(([statusKey, statusValue]) => {
-        if(statusValue=="true") filters.status.$in.push(statusKey);
-     
+    const sortOrder = {};
+    sort &&
+      Object.keys(sort).forEach((key) => {
+        sortOrder[key] = sort[key] === "asc" ? 1 : -1;
       });
-      if (filters.status.$in.length === 0) {
-        delete filters.status; 
+
+    const filters = {};
+    if (filter) {
+      ["dueDate", "createdAt"].forEach((dateField) => {
+        if (
+          filter[dateField] &&
+          filter[dateField].start &&
+          filter[dateField].end
+        ) {
+          const startDate = new Date(filter[dateField].start);
+          const endDate = new Date(filter[dateField].end);
+          endDate.setHours(23, 59, 59, 999);
+
+          filters[dateField] = { $gte: startDate, $lte: endDate };
+        }
+      });
+
+      if (filter.status) {
+        filters.status = { $in: [] };
+        Object.entries(filter.status).forEach(([statusKey, statusValue]) => {
+          if (statusValue == "true") filters.status.$in.push(statusKey);
+        });
+        if (filters.status.$in.length === 0) {
+          delete filters.status;
+        }
       }
-      
     }
-  }
     const userId = user._id;
     try {
-     
+      // maybe it could be constant //search
+      // const allowedFilters = ["title", "status", "userId", "description"];
 
-      // maybe it could be constant
-      const allowedFilters = ["title", "status", "userId", "description"];
-
-      // if (filterBy && filterBy.includes(":")) {
-      //   const [filterKey, filterValue] = filterBy.split(":");
+      // if (filter.query && filter.query.includes(":")) {
+      //   const [filterKey, filterValue] = filter.query.split(":");
 
       //   if (
       //     filterKey === "userId" &&
@@ -94,14 +95,14 @@ class TaskService extends BaseService {
           where.userId = userId;
         }
       }
-      const tasks = await Task.find({ ...where, ...filters})
+      const tasks = await Task.find({ ...where, ...filters })
         .skip(skip)
         .limit(size)
         .sort(sortOrder)
         .populate("userId", "name email -_id")
         .populate("assignedTo", "name email -_id");
 
-      const total = await Task.countDocuments({ ...where,...filters });
+      const total = await Task.countDocuments({ ...where, ...filters });
       const pageCount = Math.ceil(total / parseInt(size));
 
       const meta = {
@@ -118,19 +119,36 @@ class TaskService extends BaseService {
   }
 
   async updateTask(params) {
-    try {
-      const { body, task } = params;
+    const { body, task, next, user } = params;
 
+    try {
       task.title = body.title;
       task.description = body.description;
       task.dueDate = body.dueDate;
       task.status = body.status;
+      task.assignedTo = body.assignedTo;
 
       // track task history
-      if (body.status || body.dueDate) {
+      if (body.status || body.dueDate || body.assignedTo) {
         const updatedAt = new Date();
-        if (body.status) task.history.push({ key: "status", updatedAt });
-        if (body.dueDate) task.history.push({ key: "dueDate", updatedAt });
+        if (body.status)
+          task.history.push({ key: "status", value: body.status, updatedAt });
+        if (body.dueDate)
+          task.history.push({ key: "dueDate", value: body.dueDate, updatedAt });
+        if (body.assignedTo) {
+          // assignedTo -- filter show
+          if (!user.roles.includes(ROLES_LIST.manager)) {
+            task.history.push({ key: "role", value: body.assignedTo, updatedAt });
+
+            user.roles.push(ROLES_LIST.manager);
+            await user.save();
+          }
+          task.history.push({
+            key: "assignedTo",
+            value: body.assignedTo,
+            updatedAt,
+          });
+        }
       }
 
       await task.save();

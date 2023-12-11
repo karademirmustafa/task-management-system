@@ -42,8 +42,8 @@ const getTasks = async (req, res, next) => {
 const getTask = async (req, res, next) => {
   try {
     const params = req.params;
-
-    const task = await TaskService.findById(params.id);
+    const populate={path:"assignedTo",select:"name email"}
+    const task = await TaskService.findById(params.id,"",populate);;
 
     if (!task) throw NotFound;
 
@@ -68,7 +68,7 @@ const updateTask = async (req, res, next) => {
 
     if (!task) throw NotFound;
 
-    const result = await TaskService.updateTask({ body, task });
+    const result = await TaskService.updateTask({ body, task,next,user });
 
     return res
       .status(200)
