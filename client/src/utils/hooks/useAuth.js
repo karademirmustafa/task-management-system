@@ -9,6 +9,7 @@ import useQuery from './useQuery';
 import { apiUserProfile } from 'services/UserService';
 import { setAuthority } from 'store/auth/authoritySlice';
 import { USER } from 'constants/roles.constant';
+import toast from 'react-hot-toast';
 
 function useAuth() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function useAuth() {
         setTimeout(async () => {
           const redirectUrl = query.get(REDIRECT_URL_KEY);
           navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath,{replace:true});
+          toast.success("Login successfull!")
           return {
             status: 'success',
             message: ''
@@ -54,19 +56,21 @@ function useAuth() {
       if (resp.data.data) {
         const { token } = resp.data.data;
         dispatch(onSignInSuccess(token));
-        if (resp.data.user) {
-          dispatch(
-            setUser(
-              resp.data.user || {
-                name: 'Anonymous',
-                roles: [USER],
-                email: ''
-              }
-            )
-          );
-        }
+  
+        setTimeout(async () => {
+          const profile = await apiUserProfile();
+          dispatch(setUser(profile.data.data));
+          dispatch(setAuthority(profile.data.data.roles));
+    
+        },200)
+       
+        
+        setTimeout(() => {
         const redirectUrl = query.get(REDIRECT_URL_KEY);
-        navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath);
+          navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath, { replace: true });
+          toast.success('Registration successful'); 
+        }, 400);
+  
         return {
           status: 'success',
           message: ''
@@ -79,6 +83,7 @@ function useAuth() {
       };
     }
   };
+  
 
   const handleSignOut = () => {
     dispatch(onSignOutSuccess());

@@ -27,7 +27,7 @@
 }
 
 .input-addon {
-    @apply flex items-center px-4 rounded-md border border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700;
+    @apply flex items-center px-4 rounded-md border border-gray-300 bg-gray-50 ;
 }
 
 .input-textarea {
@@ -39,7 +39,7 @@
 }
 
 .input-disabled {
-    @apply bg-gray-100 dark:bg-gray-700  text-gray-400 cursor-not-allowed;
+    @apply bg-gray-100  text-gray-400 cursor-not-allowed;
 
     &::placeholder {
         @apply opacity-70;

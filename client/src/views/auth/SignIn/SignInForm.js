@@ -54,7 +54,7 @@ const SignInForm = (props) => {
               {/* <span className="flex items-center mb-6 text-2xl font-semibold text-gray-900 ">
                 Task Management System
               </span> */}
-              <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
+              <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 ">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                   <h2 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                     Sign in to your account
@@ -93,7 +93,7 @@ const SignInForm = (props) => {
                     <Button
                       type="button"
                       onClick={redirectRegisterPage}
-                      className="mt-2 bg-gray-800 text-white dark:text-dark dark:bg-gray-800 hover:bg-gray-600"
+                      className="mt-2 bg-gray-800 text-white hover:bg-gray-600"
                       block
                       loading={isSubmitting}>
                       Sign Up Page

@@ -79,7 +79,7 @@ const AddTask = () => {
 
               <StickyFooter
                 className="-mx-8 px-8 flex items-center justify-center py-4"
-                stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                stickyClass="border-t bg-white  border-gray-200 ">
                 <div className="md:flex items-center gap-2">
                   <Button
                     onClick={() => navigate(`/tasks`)}

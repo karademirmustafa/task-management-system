@@ -70,7 +70,7 @@ export default function TaskTable() {
       row: (props) => {
         return (
           <div>
-            <span> {props.title}</span>;
+            <span> {props.title}</span>
             <Button
               size="sm"
               icon={<MdHistory />}
