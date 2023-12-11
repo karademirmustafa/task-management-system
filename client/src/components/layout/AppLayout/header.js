@@ -63,36 +63,19 @@ const Header = () => {
         <div className="relative">
           <div className="flex items-center gap-3">
             <button
-              className="bg-purple-300 w-[35px] h-[35px] rounded-full flex-shrink-0"
+              className="bg-gray-800 w-[35px] h-[35px] rounded-full flex-shrink-0"
               onClick={() => handleAvatarOpen()}>
-              <span className="font-semibold">{userInfo?.name ?? 'M'}</span>
+              <span className="font-semibold uppercase text-white">{userInfo?.name?.charAt(0) ?? userInfo?.email?.charAt(0)}</span>
             </button>
           </div>
 
           {/* Dropdown menu */}
           {avatarOpen && (
             <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow absolute right-0 min-w-max">
-              <div className="px-4 py-3 text-sm text-gray-900 flex flex-col">
-                <div>{userInfo?.name ?? ''}</div>
+              <div className="px-4 py-3 text-sm text-gray-900 flex flex-col text-center">
+                <div className="font-bold capitalize">{userInfo?.name ?? ''}</div>
                 <div className="flex-1">{userInfo?.email}</div>
               </div>
-              <ul className="py-2 text-sm text-gray-700 " aria-labelledby="avatarButton">
-                <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100">
-                    Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100">
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100 ">
-                    Earnings
-                  </a>
-                </li>
-              </ul>
               <div className="py-1">
                 <span
                   onClick={handleSignOut}

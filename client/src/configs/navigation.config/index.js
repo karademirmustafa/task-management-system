@@ -25,14 +25,7 @@ const navigationConfig = [
     authority: [USER],
     access: [USER]
   },
-  {
-    key: '/tasks/my-tasks',
-    path: '/tasks/my-tasks',
-    title: 'My Tasks',
-    icon: 'my-tasks',
-    authority: [USER],
-    access: [USER]
-  },
+  
   {
     key: '/authorization',
     path: '/authorization',
