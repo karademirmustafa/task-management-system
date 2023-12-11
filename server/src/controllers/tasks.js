@@ -1,4 +1,5 @@
 const TaskService = require("../services/TaskService");
+const { NotFound } = require("../utils/error");
 
 const insertTask = async (req, res, next) => {
   try {
@@ -20,20 +21,20 @@ const getTasks = async (req, res, next) => {
   try {
     const user = req.user;
     const query = req.query;
-    const where = {};
+    const where = {
+      isDeletedAt: { $exists: false },
+    };
     const roles = req.roles;
     const params = { user, query, where, next, roles };
 
     const tasks = await TaskService.getTasks(params);
 
-    return res
-      .status(200)
-      .json({
-        status: true,
-        message: "Fetch tasks",
-        data: tasks.data,
-        meta: tasks.meta,
-      });
+    return res.status(200).json({
+      status: true,
+      message: "Fetch tasks",
+      data: tasks.data,
+      meta: tasks.meta,
+    });
   } catch (err) {
     next(err);
   }
@@ -42,8 +43,10 @@ const getTasks = async (req, res, next) => {
 const getTask = async (req, res, next) => {
   try {
     const params = req.params;
+
     const populate={path:"assignedTo",select:"name email"}
     const task = await TaskService.findById(params.id,"",populate);;
+
 
     if (!task) throw NotFound;
 
@@ -89,12 +92,14 @@ const removeTask = async (req, res, next) => {
     const task = await TaskService.findOne(where);
     if (!task) throw NotFound;
 
-    const result = await TaskService.removeTask({task});
-  
-    return res.status(200).json({status:true,message:"Remove Task",data:result})
+    const result = await TaskService.removeTask({ task });
+
+    return res
+      .status(200)
+      .json({ status: true, message: "Remove Task", data: result });
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { insertTask, getTasks, getTask,updateTask,removeTask };
+module.exports = { insertTask, getTasks, getTask, updateTask, removeTask };
