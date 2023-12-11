@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   description: Yup.string(),
-  dueDate:Yup.string() // now
+  dueDate:Yup.string().nullable() // now
 });
 
 const AddTask = () => {
@@ -68,7 +68,7 @@ const AddTask = () => {
                   <FormItem label="Due Date" invalid={errors.dueDate && touched.dueDate}
                     errorMessage={errors.dueDate}>
                     <Field
-                      type="text"
+                      type="date"
                       autoComplete="off"
                       name="dueDate"
                       placeholder=""
@@ -79,7 +79,7 @@ const AddTask = () => {
 
               <StickyFooter
                 className="-mx-8 px-8 flex items-center justify-center py-4"
-                stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                stickyClass="border-t bg-white  border-gray-200 ">
                 <div className="md:flex items-center gap-2">
                   <Button
                     onClick={() => navigate(`/tasks`)}
