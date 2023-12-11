@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { PasswordInput } from 'components/shared';
 import { Alert, Button, FormContainer, FormItem, Input } from 'components/ui';
 import useAuth from 'utils/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required('Please enter your e-mail'),
@@ -15,7 +16,10 @@ const SignInForm = (props) => {
   const { disableSubmit = false, className } = props;
   const [message, setMessage] = useState('');
   const { signIn } = useAuth();
-
+  const navigate = useNavigate();
+  const redirectRegisterPage = () => {
+    navigate('/sign-up');
+  };
   const onSignIn = async (values, setSubmitting) => {
     const { email, password } = values;
     setSubmitting(true);
@@ -85,6 +89,14 @@ const SignInForm = (props) => {
 
                     <Button type="submit" block loading={isSubmitting}>
                       {isSubmitting ? 'Loggin In...' : 'Login'}
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={redirectRegisterPage}
+                      className="mt-2 bg-gray-800 text-white dark:text-dark dark:bg-gray-800 hover:bg-gray-600"
+                      block
+                      loading={isSubmitting}>
+                      Sign Up Page
                     </Button>
                   </Form>
                 </div>
