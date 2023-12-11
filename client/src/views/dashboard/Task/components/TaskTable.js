@@ -73,6 +73,7 @@ export default function TaskTable() {
             <span> {props.title}</span>
             <Button
               size="sm"
+              variant="solid"
               icon={<MdHistory />}
               onClick={() => openHistoryPop(props._id)}
               className="bg-amber-500 hover:bg-amber-600 text-white">
@@ -158,6 +159,7 @@ export default function TaskTable() {
           <div className="flex gap-4 items-center">
             <Button
               type="button"
+              variant="solid"
               icon={<HiPencil />}
               className="bg-blue-500 text-white hover:bg-blue-600"
               size="sm"
@@ -168,6 +170,7 @@ export default function TaskTable() {
               type="button"
               icon={<HiTrash />}
               size="sm"
+              variant="solid"
               className="bg-red-500 text-white hover:bg-red-600"
               onClick={() => {
                 handleRemoveTask(props._id);
