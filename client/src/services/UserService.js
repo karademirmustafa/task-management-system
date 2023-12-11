@@ -6,3 +6,10 @@ export async function apiUserProfile() {
     method: 'get'
   });
 }
+
+export async function apiGetAllUsers() {
+  return ApiService.fetchData({
+    url: '/users',
+    method: 'get'
+  });
+}

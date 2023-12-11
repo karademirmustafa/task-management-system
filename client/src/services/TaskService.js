@@ -7,7 +7,6 @@ export async function apiGetTasks(query) {
   });
 }
 export async function apiGetTask(id) {
-  console.log(id,"id")
   return ApiService.fetchData({
     url: `/tasks/${id}`,
     method: 'get'

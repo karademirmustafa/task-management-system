@@ -82,7 +82,7 @@ const AddTask = () => {
                 stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <div className="md:flex items-center gap-2">
                   <Button
-                    onClick={() => navigate(`/int/decision`)}
+                    onClick={() => navigate(`/tasks`)}
                     icon={<HiChevronLeft />}
                     size="sm"
                     className="ltr:mr-3 rtl:ml-3"

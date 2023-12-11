@@ -3,23 +3,35 @@ import { createSlice } from '@reduxjs/toolkit';
 const stateSlice = createSlice({
   name: 'taskList/state',
   initialState: {
-    deleteConfirmation: false,
-    selectedTask: '',
-    sortedColumn: () => {}
+    dropdownDateFilter:false,
+    dropdownStatusFilter:false,
+    dropdownSortBy:false,
+    historyPopup: {
+      isOpen: false, // HistoryPopup başlangıçta kapalı
+      taskId: null, // Açık olan HistoryPopup hangi görev için
+    },
   },
   reducers: {
-    toggleDeleteConfirmation: (state, action) => {
-      state.deleteConfirmation = action.payload;
+    toggleDateFilter: (state,action) => {
+      state.dropdownDateFilter=action.payload;
     },
-    setSortedColumn: (state, action) => {
-      state.sortedColumn = action.payload;
+    toggleStatusFilter: (state,action) => {
+      state.dropdownStatusFilter=action.payload;
     },
-    setSelectedTask: (state, action) => {
-      state.selectedTask = action.payload;
-    }
+    toggleSortBy: (state,action) => {
+      state.dropdownSortBy=action.payload;
+    },
+    openHistoryPopup: (state, action) => {
+      state.historyPopup.isOpen = true;
+      state.historyPopup.taskId = action.payload.taskId;
+    },
+    closeHistoryPopup: (state) => {
+      state.historyPopup.isOpen = false;
+      state.historyPopup.taskId = null;
+    },
   }
 });
 
-export const { toggleDeleteConfirmation, setSortedColumn, setSelectedBonus } = stateSlice.actions;
+export const { toggleDateFilter, toggleStatusFilter, toggleSortBy,openHistoryPopup,closeHistoryPopup } = stateSlice.actions;
 
 export default stateSlice.reducer;

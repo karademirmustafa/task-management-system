@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTasks, setFilterDatas, initialFilterData } from '../store/dataSlice';
+import { getTasks, initialFilterData, setFilterData } from '../store/dataSlice';
 import { Loading, Table } from 'components/shared';
 import { Button } from 'components/ui';
 import { useNavigate } from 'react-router-dom';
@@ -8,21 +8,31 @@ import { HiPencil, HiTrash } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { apiRemoveTask } from 'services/TaskService';
 import toast from 'react-hot-toast';
+import { MdHistory } from 'react-icons/md';
+import HistoryPopup from './HistoryPopup';
+import { openHistoryPopup } from '../store/stateSlice';
 export default function TaskTable() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //   const { pageIndex, pageSize, sort, query, total } = useSelector(
-  //     (state) => state.taskList?.data.tableData
-  //   );
-
   const loading = useSelector((state) => state.taskList.data.loading);
   const data = useSelector((state) => state.taskList.data.taskList.data);
-  //   const tableData = useMemo(
-  //     () => ({ pageIndex, pageSize, sort, query, total }),
-  //     [pageIndex, pageSize, sort, query, total]
-  //   );
+  const filterData = useSelector((state) => state.taskList.data.filterData);
+  const { pageIndex, pageCount, pageSize, sort, query, total } = useSelector(
+    (state) => state.taskList?.data.tableData
+  );
 
+  // const tableData = useMemo(
+  //   () => ({ pageIndex, pageSize, sort, query, total }),
+  //   [pageIndex, pageSize, sort, query, total]
+  // );
+  const handlePageChange = (newPage) => {
+    dispatch(getTasks({ ...filterData, page: newPage }));
+  };
+  const handlePageSizeChange = (newPageSize) => {
+    dispatch(setFilterData({ size: newPageSize }));
+    dispatch(getTasks({ ...filterData, page: 1, size: newPageSize })); // Fetch data with new page size, reset to first page
+  };
   const handleRemoveTask = (id) => {
     Swal.fire({
       title: 'Are you sure you want to delete this task?',
@@ -38,24 +48,38 @@ export default function TaskTable() {
         try {
           const resp = await apiRemoveTask(id);
           if (resp.data.status) {
-            toast.success("Task successfully deleted!");
-            navigate('/tasks');
+            dispatch(getTasks(initialFilterData));
+            toast.success('Task successfully deleted!');
           } else {
-            toast.error("Failed to delete task!");
+            toast.error('Failed to delete task!');
           }
         } catch (err) {
-          toast.error(err?.response?.data?.message || err.toString() || "Failed to delete task!");
+          toast.error(err?.response?.data?.message || err.toString() || 'Failed to delete task!');
         }
       }
     });
   };
-  
+
+  const openHistoryPop = (taskId) => {
+    dispatch(openHistoryPopup({ taskId }));
+  };
   const columns = [
     {
       key: 'title',
-      cell: <span>Title</span>,
+      cell: <span>Title & History</span>,
       row: (props) => {
-        return <span>{props.title}</span>;
+        return (
+          <div>
+            <span> {props.title}</span>;
+            <Button
+              size="sm"
+              icon={<MdHistory />}
+              onClick={() => openHistoryPop(props._id)}
+              className="bg-amber-500 hover:bg-amber-600 text-white">
+              History
+            </Button>
+          </div>
+        );
       }
     },
     {
@@ -107,8 +131,20 @@ export default function TaskTable() {
       key: 'status',
       cell: <span>Status</span>,
       row: (props) => {
+        const getBgColor = (key) => {
+          switch (key) {
+            case 'pending':
+              return 'bg-yellow-500 hover:bg-yellow-600 text-white cursor-not-allowed';
+            case 'waiting':
+              return 'bg-orange-500 hover:bg-orange-600 text-white cursor-not-allowed';
+            case 'completed':
+              return 'bg-green-500 hover:bg-green-600 text-white cursor-not-allowed';
+            default:
+              return 'bg-gray-500';
+          }
+        };
         return (
-          <Button size="sm" className="uppercase">
+          <Button className={`${getBgColor(props.status)} uppercase`} size="sm">
             {props.status}{' '}
           </Button>
         );
@@ -123,8 +159,8 @@ export default function TaskTable() {
             <Button
               type="button"
               icon={<HiPencil />}
+              className="bg-blue-500 text-white hover:bg-blue-600"
               size="sm"
-              className="bg-blue-600 text-white"
               onClick={() => navigate(`/tasks/${props._id}`)}>
               Edit
             </Button>
@@ -132,8 +168,10 @@ export default function TaskTable() {
               type="button"
               icon={<HiTrash />}
               size="sm"
-              className="bg-red-600 text-white"
-              onClick={() => {handleRemoveTask(props._id)}}>
+              className="bg-red-500 text-white hover:bg-red-600"
+              onClick={() => {
+                handleRemoveTask(props._id);
+              }}>
               Remove
             </Button>
           </div>
@@ -151,8 +189,24 @@ export default function TaskTable() {
 
   return (
     <>
-      {loading && <Loading />}
-      <Table columns={columns} data={data} loading={loading} />
+     {loading ? (
+      <Loading />
+    ) : (
+      <>
+        <HistoryPopup />
+        <Table
+          columns={columns}
+          data={data}
+          loading={loading}
+          currentPage={pageIndex}
+          totalPages={pageCount}
+          onPageChange={handlePageChange}
+          totalItems={total}
+          pageSize={pageSize}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      </>
+    )}
     </>
   );
 }

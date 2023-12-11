@@ -14,7 +14,10 @@ const routes = require("./routes");
 config();
 
 //Load loaders
-loaders();
+if (process.env.NODE_ENV !== 'test') {
+    loaders();
+  }
+  
 
 app.use(cors());
 app.use(helmet());

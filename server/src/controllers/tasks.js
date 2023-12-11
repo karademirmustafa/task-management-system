@@ -44,19 +44,9 @@ const getTask = async (req, res, next) => {
   try {
     const params = req.params;
 
-    const where = {
-      _id: params.id,
-      isDeletedAt: { $exists: false },
-    };
-    const populate = {
-      path: "userId",
-      select: "-password",
-    };
-    const populate2 = {
-      path: "assignedTo",
-      select: "-password",
-    };
-    const task = await TaskService.findOne(where, undefined,populate,populate2);
+    const populate={path:"assignedTo",select:"name email"}
+    const task = await TaskService.findById(params.id,"",populate);;
+
 
     if (!task) throw NotFound;
 
@@ -81,7 +71,7 @@ const updateTask = async (req, res, next) => {
 
     if (!task) throw NotFound;
 
-    const result = await TaskService.updateTask({ body, task });
+    const result = await TaskService.updateTask({ body, task,next,user });
 
     return res
       .status(200)
