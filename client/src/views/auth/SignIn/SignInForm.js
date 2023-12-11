@@ -76,8 +76,8 @@ const SignInForm = (props) => {
 
                       <FormItem
                         label="Password"
-                        invalid={errors.email && touched.email}
-                        errorMessage={errors.email}>
+                        invalid={errors.password && touched.password}
+                        errorMessage={errors.password}>
                         <Field
                           autoComplete="off"
                           name="password"
