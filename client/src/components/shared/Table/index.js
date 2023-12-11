@@ -10,7 +10,7 @@ const TableComponent = (props) => {
   return (
     <>
       {loading && <Loading />}
-      {!loading && (
+      {!loading && data?.length > 0&& (
         <>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -40,7 +40,7 @@ const TableComponent = (props) => {
         </>
       )}
 
-      {!loading && data?.length === 0 && <Alert type="info">No tasks found in table</Alert>}
+      {!loading && data?.length === 0 && <Alert type="info" >No tasks found in table</Alert>}
     </>
   );
 };

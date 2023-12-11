@@ -21,6 +21,7 @@ export default function TaskTable() {
   const { pageIndex, pageCount, pageSize, sort, query, total } = useSelector(
     (state) => state.taskList?.data.tableData
   );
+
   // const tableData = useMemo(
   //   () => ({ pageIndex, pageSize, sort, query, total }),
   //   [pageIndex, pageSize, sort, query, total]
@@ -70,7 +71,13 @@ export default function TaskTable() {
         return (
           <div>
             <span> {props.title}</span>;
-            <Button size="sm" icon={<MdHistory/>} onClick={() => openHistoryPop(props._id)}className="bg-amber-500 hover:bg-amber-600 text-white">History</Button>
+            <Button
+              size="sm"
+              icon={<MdHistory />}
+              onClick={() => openHistoryPop(props._id)}
+              className="bg-amber-500 hover:bg-amber-600 text-white">
+              History
+            </Button>
           </div>
         );
       }
@@ -182,19 +189,24 @@ export default function TaskTable() {
 
   return (
     <>
-      {loading && <Loading />}
-    <HistoryPopup/>
-      <Table
-        columns={columns}
-        data={data}
-        loading={loading}
-        currentPage={pageIndex}
-        totalPages={pageCount}
-        onPageChange={handlePageChange}
-        totalItems={total}
-        pageSize={pageSize}
-        onPageSizeChange={handlePageSizeChange}
-      />
+     {loading ? (
+      <Loading />
+    ) : (
+      <>
+        <HistoryPopup />
+        <Table
+          columns={columns}
+          data={data}
+          loading={loading}
+          currentPage={pageIndex}
+          totalPages={pageCount}
+          onPageChange={handlePageChange}
+          totalItems={total}
+          pageSize={pageSize}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      </>
+    )}
     </>
   );
 }

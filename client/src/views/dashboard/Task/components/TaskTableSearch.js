@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { Input } from 'components/ui';
-import { HiOutlineSearch } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTasks, setTableData } from '../store/dataSlice';
 import debounce from 'lodash/debounce';
@@ -29,8 +28,9 @@ const TaskTableSearch = () => {
   }
 
   const fetchData = (data) => {
-    dispatch(setTableData(data));
-    dispatch(getTasks(data));
+    console.log(data,"DATA")
+    // dispatch(setTableData(data));
+    // dispatch(getTasks(data));
   };
 
   const onEdit = (e) => {
@@ -42,8 +42,7 @@ const TaskTableSearch = () => {
       ref={searchInput}
       className="max-w-md md:w-52"
       size="sm"
-      placeholder="Kayıt ara"
-    //   prefix={<HiOutlineSearch className="text-lg" />}
+      placeholder="Search"
       onChange={onEdit}
     />
   );

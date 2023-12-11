@@ -9,7 +9,7 @@ import TaskDateFilter from './TaskDateFilter';
 const TaskTableTools = () => {
   return (
     <div className="flex flex-col items-center md:items-center lg:flex-row lg:items-center gap-2">
-      <TaskTableSearch />
+      {/* <TaskTableSearch />  maybe later*/}
       <TaskDateFilter />
       <TaskStatusFilter />
       <TaskSortBy />
