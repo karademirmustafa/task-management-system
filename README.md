@@ -125,9 +125,9 @@ Now, you have a complete "Getting Started" section in markdown format that provi
 
 ## Live Demo:
 
-    Frontend:
-    Live Demo (https://task-management-system-gamma.vercel.app)
-    Backend: Live Demo (https://task-management-system-api.onrender.com ) 
+Frontend: [Live Demo](https://task-management-system-gamma.vercel.app)
+Backend: [Live Demo](https://task-management-system-api.onrender.com)
+
 
 (Please note that the backend may run slower as it is hosted on a low-CPU environment.)
 Now, you have the live demo links for both the frontend and backend in your README file, allowing users to access the deployed application directly.
