@@ -1,14 +1,14 @@
 import React from 'react';
 
-const permissionRoute = [
+const publicRoute = [
   {
     key: 'info',
     path: `/info`,
     component: React.lazy(() => import('views/info')),
-    title:"Info Page",
-    type:"Public",
+    title:"Info Page(TEST)",
+    type:"Private",
     description:"Info all page permission and path",
-    authority:['All'],
+    authority:[],
 
 
   },
@@ -16,4 +16,4 @@ const permissionRoute = [
 
 ];
 
-export default permissionRoute;
+export default publicRoute;

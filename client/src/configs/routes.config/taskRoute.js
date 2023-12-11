@@ -41,6 +41,16 @@ const taskRoute = [
     title: 'My Tasks Page',
     type: 'Private',
     description: 'My Task'
+  },
+  {
+    key: 'Admin Page test',
+    path: '/admin',
+    component: React.lazy(() => import('views/dashboard/Task/components/MyTask')),
+    authority: [ADMIN],
+    access: [],
+    title: 'Admin Page',
+    type: 'Private',
+    description: 'Admin page'
   }
 ];
 

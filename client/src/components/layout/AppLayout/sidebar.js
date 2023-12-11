@@ -41,7 +41,7 @@ const Sidebar = (props) => {
                 </AuthorityCheck>
               ))}
             </ul>
-            {/* <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 ">
+            <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 ">
               <li>
                 <a
                   href="#"
@@ -103,7 +103,7 @@ const Sidebar = (props) => {
                   <span className="ms-3">Help</span>
                 </a>
               </li>
-            </ul> */}
+            </ul>
           </div>
         </aside>
       )}

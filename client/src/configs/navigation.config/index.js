@@ -42,7 +42,7 @@ const navigationConfig = [
     authority: [MANAGER],
     access: [MANAGER]
   },
-  { key: '/info', path: '/info', title: 'Info', icon: 'info', authority: [], access: [] },
+  { key: '/info', path: '/info', title:  'Info', icon: 'info', authority: [ADMIN], access: [ADMIN] },
   {
     key: '/logout',
     path: '/logout',
