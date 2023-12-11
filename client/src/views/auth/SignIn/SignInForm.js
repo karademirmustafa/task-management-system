@@ -92,6 +92,7 @@ const SignInForm = (props) => {
                     </Button>
                     <Button
                       type="button"
+                      variant="solid"
                       onClick={redirectRegisterPage}
                       className="mt-2 bg-gray-800 text-white hover:bg-gray-600"
                       block

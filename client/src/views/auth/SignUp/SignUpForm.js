@@ -120,7 +120,7 @@ const SignUpForm = (props) => {
                     <Button type="submit" block loading={isSubmitting}>
                       {isSubmitting ? 'Registering...' : 'Register'}
                     </Button>
-                    <Button type="button"  onClick={redirectLoginPage} className="mt-2 bg-gray-800 text-white hover:bg-gray-600" block loading={isSubmitting}>
+                    <Button type="button"  variant="solid" onClick={redirectLoginPage} className="mt-2 bg-gray-800 text-white hover:bg-gray-600" block loading={isSubmitting}>
                       Sign In Page
                     </Button>
                   </Form>
