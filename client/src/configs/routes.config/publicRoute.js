@@ -6,7 +6,7 @@ const publicRoute = [
     path: `/info`,
     component: React.lazy(() => import('views/info')),
     title:"Info Page(TEST)",
-    type:"Private",
+    type:"Public",
     description:"Info all page permission and path",
     authority:[],
 

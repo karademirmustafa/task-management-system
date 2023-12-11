@@ -1,16 +1,35 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import navigationConfig from 'configs/navigation.config';
-import { Link,useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthorityCheck } from 'components/shared';
 import navigationIcon from 'configs/icon.config';
 import classNames from 'classnames';
+import Swal from 'sweetalert2';
+import useAuth from 'utils/hooks/useAuth';
+import { TbLogout } from 'react-icons/tb';
 const Sidebar = (props) => {
   const { children } = props;
 
   const sidebarOpen = useSelector((state) => state.base.common.sidebarOpen);
   const userAuthority = useSelector((state) => state.auth.authority.roles);
-
+  const { signOut } = useAuth();
+  const handleSignOut = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out',
+      cancelButtonText: 'No'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await signOut();
+      }
+    });
+  };
   const location = useLocation();
   const currentPath = location.pathname;
   return (
@@ -29,10 +48,12 @@ const Sidebar = (props) => {
                     <Link
                       to={nav.path}
                       className={classNames(
-                        "flex items-center p-2 text-gray-900 rounded-lg group",
-                        { "bg-gray-300 cursor-not-allowed": currentPath === nav.path, "hover:bg-gray-100": currentPath !== nav.path }
-                      )}
-                      >
+                        'flex items-center p-2 text-gray-900 rounded-lg group',
+                        {
+                          'bg-gray-300 cursor-not-allowed': currentPath === nav.path,
+                          'hover:bg-gray-100': currentPath !== nav.path
+                        }
+                      )}>
                       <span className="text-2xl">{navigationIcon[nav.icon]}</span>
 
                       <span className="ms-3">{nav.title}</span>
@@ -41,7 +62,19 @@ const Sidebar = (props) => {
                 </AuthorityCheck>
               ))}
             </ul>
-            <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 ">
+            <ul className="space-y-2 font-medium">
+              <li
+                onClick={handleSignOut}
+                className={classNames(
+                  'flex items-center p-2 text-gray-900 rounded-lg group cursor-pointer'
+                )}>
+                <span className="text-2xl cursor-pointer">
+                  <TbLogout />
+                </span>
+                <span className="ms-3 ">Logout</span>
+              </li>
+            </ul>
+            {/* <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 ">
               <li>
                 <a
                   href="#"
@@ -103,7 +136,7 @@ const Sidebar = (props) => {
                   <span className="ms-3">Help</span>
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </aside>
       )}

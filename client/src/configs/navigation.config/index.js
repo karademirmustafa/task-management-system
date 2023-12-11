@@ -9,14 +9,14 @@ const navigationConfig = [
     authority: [USER],
     access: [USER]
   },
-  {
-    key: '/dashboard',
-    path: '/dashboard',
-    title: 'Dashboard',
-    icon: 'dashboard',
-    authority: [USER],
-    access: [USER]
-  },
+  // {
+  //   key: '/dashboard',
+  //   path: '/dashboard',
+  //   title: 'Dashboard',
+  //   icon: 'dashboard',
+  //   authority: [USER],
+  //   access: [USER]
+  // },
   {
     key: '/tasks',
     path: '/tasks',
@@ -43,14 +43,14 @@ const navigationConfig = [
     access: [MANAGER]
   },
   { key: '/info', path: '/info', title:  'Info', icon: 'info', authority: [ADMIN], access: [ADMIN] },
-  {
-    key: '/logout',
-    path: '/logout',
-    title: 'Logout',
-    icon: 'logout',
-    authority: [USER],
-    access: [USER]
-  }
+  // {
+  //   key: '/logout',
+  //   path: '/logout',
+  //   title: 'Logout',
+  //   icon: 'logout',
+  //   authority: [USER],
+  //   access: [USER]
+  // }
 ];
 
 export default navigationConfig;
